@@ -1,0 +1,387 @@
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,300');
+
+* { margin: 0; padding: 0; }
+
+html
+{
+	/*background-image: -webkit-radial-gradient(top center, circle cover, #e7e7e8 30%, #C6C6C6);*/
+	/*background-image: -moz-radial-gradient(top center, circle cover, #E7E7E8 30%, #C6C6C6);*/
+	/*background-image: -ms-radial-gradient(top center, circle cover, #E7E7E8 30%, #C6C6C6);*/
+	/*background-image: -o-radial-gradient(top center, circle cover, #E7E7E8 30%, #C6C6C6);*/
+	/*background-image: radial-gradient(top center, circle cover, #E7E7E8 30%, #C6C6C6);*/
+	height: 100%;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	overflow: hidden;
+
+
+}
+
+h1
+{
+	position: relative;
+	top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+	text-align: center;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+	color: #636260;
+	font-size: 28px;
+	font-weight: 500;
+	z-index: -1;
+}
+
+
+h1 span { color: #3857af; font-weight: 500; }
+
+#text
+{
+	position: relative;
+    text-align: justify;
+    width: 80%;
+	top: 45px;
+	margin-right: auto;
+	margin-left: auto;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+	color: #2d2c2a;
+	font-size: 18px;
+	font-weight: 100;
+	z-index: -1;
+}
+
+#funcionality
+{
+    position: relative;
+    width: auto;
+	top: 50px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+	color: #2d2c2a;
+	font-size: 18px;
+	font-weight: 400;
+	z-index: -1;
+}
+
+
+
+
+
+
+/* Debug */
+
+#debug
+{
+	position: relative;
+	top: 0;
+	left: 0;
+	padding: 5px;
+}
+
+
+/*
+.myButton {
+	-moz-box-shadow: 0px 10px 14px -7px #3857af;
+	-webkit-box-shadow: 0px 10px 14px -7px #566baf;
+	box-shadow: 0px 10px 14px -7px #1f2f5e;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6997ee), color-stop(1, #2a4182));
+	background:-moz-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-webkit-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-o-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-ms-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:linear-gradient(to bottom, #6997ee 5%, #2a4182 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4DAF7C', endColorstr='#72b352',GradientType=0);
+	background-color: #2a4182;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	border:1px solid #2a4182;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	padding:6px 13px;
+	text-decoration:double;
+	text-shadow:0px 1px 0px #566baf;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2a4182), color-stop(1, #6997ee));
+	background:-moz-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-webkit-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-o-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-ms-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:linear-gradient(to bottom, #2a4182 5%, #6997ee 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#72b352', endColorstr='#4DAF7C',GradientType=0);
+	background-color: #3857af;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+*/
+
+
+
+.myButton {
+	position: relative;
+    background-color: inherit;
+	cursor:pointer;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif,  Arial, sans-serif;
+	font-size:12px;
+	padding:6px 8px;;
+    font-weight: 700;
+    border: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    margin-right: auto;
+    margin-left: auto;
+    top: 600px;
+    border-color: #6c6c6c;
+    color: #6c6c6c;
+
+
+}
+.myButton:hover {
+	background-color: inherit;
+    color:inherit;
+    border-color: inherit;
+
+}
+
+
+
+#restart{
+    position: relative;
+    top: 10%;
+    left: 1300px;
+}
+
+
+
+input[type="submit"].run_cnn {
+	-moz-box-shadow: 0px 10px 14px -7px #3857af;
+	-webkit-box-shadow: 0px 10px 14px -7px #566baf;
+	box-shadow: 0px 10px 14px -7px #1f2f5e;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6997ee), color-stop(1, #2a4182));
+	background:-moz-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-webkit-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-o-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:-ms-linear-gradient(top, #6997ee 5%, #2a4182 100%);
+	background:linear-gradient(to bottom, #6997ee 5%, #2a4182 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4DAF7C', endColorstr='#72b352',GradientType=0);
+	background-color: #2a4182;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	border:1px solid #2a4182;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+	font-size:13px;
+	padding:6px 13px;
+	text-decoration:double;
+	text-shadow:0px 1px 0px #566baf;
+}
+
+
+
+input[type="submit"].run_cnn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2a4182), color-stop(1, #6997ee));
+	background:-moz-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-webkit-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-o-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:-ms-linear-gradient(top, #2a4182 5%, #6997ee 100%);
+	background:linear-gradient(to bottom, #2a4182 5%, #6997ee 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#72b352', endColorstr='#4DAF7C',GradientType=0);
+	background-color: #3857af;
+}
+input[type="submit"].run_cnn:active {
+	position:relative;
+	top:1px;
+}
+
+
+#my_id {
+    display: none;
+}
+
+
+
+
+#github-corner-link {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  top: -0px;
+  right: -1800px;
+  border-radius: 50%;
+  background-color:  #3857af;
+  transition: background-color 0.2s ease-in;
+    box-shadow: 0px 10px 14px -7px #1f2f5e;
+}
+
+#github-corner-link:hover {
+  background-color: rgba(56, 87, 175, 0.80);
+}
+
+#github-corner-link .github-logo {
+  position: relative;
+  bottom: -7px;
+  left: 7px;
+  fill: #e7e7e8;
+}
+
+
+#results{
+
+    text-align: justify;
+    width: auto;
+    position: relative;
+	top: 150px;
+    right: 850px;
+
+}
+
+#computing_text{
+    width: auto;
+    position: relative;
+	top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif,  Arial, sans-serif;
+	color: #3857AF;
+	font-size: 18px;
+	font-weight: 400;
+	z-index: -1;
+}
+
+#spinner{
+	position: relative;
+	top: 30px;
+
+    width: auto;
+    margin-left: auto;
+	margin-right: auto;
+}
+
+#selected_img{
+    position: relative;
+	top: 20px;
+}
+
+#predictions1{
+    position: relative;
+	top: 50px;
+    font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+    font-size: 20px;
+    font-weight:600;
+    color: #2d2c2a;
+    z-index: -1;
+
+}
+
+#predictions2{
+    position: relative;
+	top: 70px;
+    font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+    font-size: 19px;
+    color: #2d2c2a;
+    z-index: -1;
+    font-weight:400;
+}
+
+#upload_image{
+    position: relative;
+    top:18px;
+    text-align: center;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif, Arial, sans-serif;
+	color: #2d2c2a;
+	font-size: 20px;
+	font-weight:500;
+	z-index: -1;
+}
+
+#submit_form{
+    position: relative;
+    top: 24px;
+}
+
+
+
+#home-link {
+  position: absolute;
+  top: 203px;
+    right:650px;
+
+}
+
+
+#home-link2 {
+  position: relative;
+  top: 150px;
+    text-align: center;
+    margin-left: 30%;
+
+
+}
+
+
+.svg-icon {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #3857af;
+}
+
+.svg-icon circle {
+  stroke: #3857af;
+  stroke-width: 1;
+}
+
+
+
+
+#instructions{
+    text-align: center;
+    opacity: 0.70;
+
+
+}
+
+
+#linkclass{
+    position: relative;
+    top: 150px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    right:-1220px;
+}
+
+
+
+#refresh_index{
+    position: relative;
+    top: 85px;
+    left: 210px;
+    text-align: center;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif,  Arial, sans-serif;
+	color: #3857af;
+	font-size: 15px;
+	font-weight:600;
+	z-index: -1;
+}
+

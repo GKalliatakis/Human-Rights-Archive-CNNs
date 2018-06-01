@@ -1,0 +1,9 @@
+/a/Arms 0
+/c/Child_Labour 1
+/c/Child_Marriage 2
+/d/Detention_Centres 3
+/d/Disability 4
+/e/Environment 5
+/n/No_Violation 6
+/o/Out_Of_School 7
+/r/Refugees 8

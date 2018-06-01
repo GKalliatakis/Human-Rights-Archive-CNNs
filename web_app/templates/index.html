@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>HRA: An Image Database for Human Rights Violations Recognition</title>
+
+      <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style.css') }}">
+
+
+</head>
+
+<body>
+
+
+		<h1>Human Rights Violations Recognition Demo using <span>Convolutional Neural Networks</span></h1>
+        <!--
+        <div id="github-corner-link"><a target="_blank" href="https://github.com/GKalliatakis" ><svg height="36" width="36" class="github-logo" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                </a>
+        </div>
+        -->
+
+		<!--<canvas id="canvas" width="280" height="280" style="border:8px solid; float: left; margin: 70px; margin-top:160px;  border-radius: 5px; cursor: crosshair;"></canvas>-->
+		<div id="debug">
+
+
+            <div id="text">
+                <p>This demo identifies if the image depicts a human right violation, and suggests the
+                    top-3 human rights violations classes representing the image. We use the Keras
+                    high-level neural networks API and our fine-tuned HRA-CNN.
+                    Please note that we are limited to the 8 classes (<i>arms, child labour, child marriage, detention centres,
+                    disability rights, displaced populations, environment </i> and <i> out of school</i>)
+                    of Human Rights Archive (HRA) dataset &#38; an extra class of <i> &#8216;no violation&#8217;</i> which is currently being used for this demo.
+                    Keep in mind that this is image classification and not object detection,
+                    so the network is forced to output a single class through softmax.
+                    Best results are on images where the classification target spans a large portion of the image.</p>
+                    <br><p id="instructions">	&#10035; Choose your image (png or jpg/jpeg)  and press &lsquo;Run&rsquo;. After the predictions are shown, if
+                    you want to test a differernt image, press the &lsquo;Start Over&rsquo; button to restart the procedure.</p>
+
+            </div>
+
+            <!--
+            <a id="linkclass" href="http://0.0.0.0:5000/" >
+                <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path fill="none" d="M3.254,6.572c0.008,0.072,0.048,0.123,0.082,0.187c0.036,0.07,0.06,0.137,0.12,0.187C3.47,6.957,3.47,6.978,3.484,6.988c0.048,0.034,0.108,0.018,0.162,0.035c0.057,0.019,0.1,0.066,0.164,0.066c0.004,0,0.01,0,0.015,0l2.934-0.074c0.317-0.007,0.568-0.271,0.56-0.589C7.311,6.113,7.055,5.865,6.744,5.865c-0.005,0-0.01,0-0.015,0L5.074,5.907c2.146-2.118,5.604-2.634,7.971-1.007c2.775,1.912,3.48,5.726,1.57,8.501c-1.912,2.781-5.729,3.486-8.507,1.572c-0.259-0.18-0.618-0.119-0.799,0.146c-0.18,0.262-0.114,0.621,0.148,0.801c1.254,0.863,2.687,1.279,4.106,1.279c2.313,0,4.591-1.1,6.001-3.146c2.268-3.297,1.432-7.829-1.867-10.101c-2.781-1.913-6.816-1.36-9.351,1.058L4.309,3.567C4.303,3.252,4.036,3.069,3.72,3.007C3.402,3.015,3.151,3.279,3.16,3.597l0.075,2.932C3.234,6.547,3.251,6.556,3.254,6.572z"></path>
+                </svg>
+            </a>
+            -->
+
+
+
+
+            <!--
+            <p id="refresh_index">Start Over</p>
+
+
+            <div id="home-link2"><a href="http://0.0.0.0:5000/"><svg class="svg-icon" viewBox="0 0 20 20">
+							<path fill="none" d="M3.254,6.572c0.008,0.072,0.048,0.123,0.082,0.187c0.036,0.07,0.06,0.137,0.12,0.187C3.47,6.957,3.47,6.978,3.484,6.988c0.048,0.034,0.108,0.018,0.162,0.035c0.057,0.019,0.1,0.066,0.164,0.066c0.004,0,0.01,0,0.015,0l2.934-0.074c0.317-0.007,0.568-0.271,0.56-0.589C7.311,6.113,7.055,5.865,6.744,5.865c-0.005,0-0.01,0-0.015,0L5.074,5.907c2.146-2.118,5.604-2.634,7.971-1.007c2.775,1.912,3.48,5.726,1.57,8.501c-1.912,2.781-5.729,3.486-8.507,1.572c-0.259-0.18-0.618-0.119-0.799,0.146c-0.18,0.262-0.114,0.621,0.148,0.801c1.254,0.863,2.687,1.279,4.106,1.279c2.313,0,4.591-1.1,6.001-3.146c2.268-3.297,1.432-7.829-1.867-10.101c-2.781-1.913-6.816-1.36-9.351,1.058L4.309,3.567C4.303,3.252,4.036,3.069,3.72,3.007C3.402,3.015,3.151,3.279,3.16,3.597l0.075,2.932C3.234,6.547,3.251,6.556,3.254,6.572z"></path>
+						    </svg></a><p id="refresh_index">Start Over</p>
+
+            </div>
+            -->
+
+            <div id="funcionality">
+
+
+                <form>
+                    <input type="button" title="restart the procedure" value="Start Over" class="myButton" id="star_over" onclick="window.location.href='http://0.0.0.0:5000/'" />
+                </form>
+
+
+
+
+
+                <b id="upload_image">Upload Image:</b>
+
+
+
+
+
+                    <form id="submit_form" method=POST enctype=multipart/form-data>
+                        <input type=file name=photo id="myFile">
+                        <!--
+                        <input type="submit" value="Run" class="run_cnn" onclick="document.getElementById('my_id').style.display = 'block' ;">
+                        -->
+                        <input type="submit" value="Run" class="run_cnn" onclick="myFunction()" >
+
+
+
+
+                        <img id="spinner" src="/static/loader5.gif" style="display: none"><br/>
+                        <b id="computing_text" style="display: none"> Computing...</b>
+
+
+
+                        <img id="selected_img" src={{image}}><br>
+                        <p id="predictions1">{{final_predictions_pt2}}</p>
+                        <p id="predictions2">{{final_predictions_pt1}} </p>
+
+                    </form>
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <!--
+            <div id="home-link"><a href="http://0.0.0.0:5000/"><svg class="svg-icon" viewBox="0 0 20 20">
+							<path fill="none" d="M3.254,6.572c0.008,0.072,0.048,0.123,0.082,0.187c0.036,0.07,0.06,0.137,0.12,0.187C3.47,6.957,3.47,6.978,3.484,6.988c0.048,0.034,0.108,0.018,0.162,0.035c0.057,0.019,0.1,0.066,0.164,0.066c0.004,0,0.01,0,0.015,0l2.934-0.074c0.317-0.007,0.568-0.271,0.56-0.589C7.311,6.113,7.055,5.865,6.744,5.865c-0.005,0-0.01,0-0.015,0L5.074,5.907c2.146-2.118,5.604-2.634,7.971-1.007c2.775,1.912,3.48,5.726,1.57,8.501c-1.912,2.781-5.729,3.486-8.507,1.572c-0.259-0.18-0.618-0.119-0.799,0.146c-0.18,0.262-0.114,0.621,0.148,0.801c1.254,0.863,2.687,1.279,4.106,1.279c2.313,0,4.591-1.1,6.001-3.146c2.268-3.297,1.432-7.829-1.867-10.101c-2.781-1.913-6.816-1.36-9.351,1.058L4.309,3.567C4.303,3.252,4.036,3.069,3.72,3.007C3.402,3.015,3.151,3.279,3.16,3.597l0.075,2.932C3.234,6.547,3.251,6.556,3.254,6.572z"></path>
+						    </svg></a><p id="refresh_index">Restart</p>
+
+            </div>
+
+
+
+            <div >
+                <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+                        <input type=file name=photo >
+                        <input id="my_value" type="submit" value="Run" class="run_cnn" onclick="myFunction()">
+                </form>
+                <p id="demo"></p>
+                <img id="spinner" src="/static/loader.gif" style="display: none">
+
+
+
+            </div>
+            -->
+
+
+
+<!--
+            <div id="github-corner-link"><a target="_blank" href="https://github.com/GKalliatakis" ><svg height="36" width="36" class="github-logo" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                </a>
+            </div>
+
+        -->
+
+
+
+			<!-- <input type="color" id="colors">
+			 <input type="number" id="lineWidth" style="width:60px" value="0.2" step="0.1" min="0.1">
+			<input type="button" id="clearButton" value="Clear" style="">
+			<br/>
+			<span style="color: #4DAF7C; font-weight: 400; font-family: 'Open Sans', Helvetica;	">Draw the Digit inside this Box!</span>-->
+
+            <!--
+            <br>
+            <b>Upload:</b>
+            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+                <input type=file name=photo >
+                <input type="submit" value="Run" class="run_cnn" onclick="document.getElementById('my_id').style.display = 'block' ;">
+
+            </form>
+
+
+
+            <br>
+            <b>Enter Image URL:</b>
+            <form method="POST" enctype=multipart/form-data action="{{ url_for('upload') }}">
+                <input id="text" name="url_field" value="" placeholder="Enter URL" />
+                <input type="submit">
+            </form>
+
+
+
+            <br>
+
+
+
+
+            <img src={{image}}>
+            <p>{{final_predictions}} </p>
+
+             -->
+
+
+
+
+        </div>
+
+
+        <!--
+        <div>
+            <b>or</b> choose one of these examples:
+            <br><br>
+
+            <table width="155" border="0" cellpadding="5"cellspacing="10">
+
+
+            <tr>
+
+
+            <td align="center" valign="center">
+            <img src="./static/1.jpg" onclick="go(this.src);" width="150px" height="80px"/>
+            </td>
+
+            <td align="center" valign="center">
+            <img src="./static/2.jpg" onclick="go(this.src);" width="150px" height="80px"/>
+            </td>
+            </tr>
+
+            <td align="center" valign="center">
+            <img src="./static/3.jpg" onclick="go(this.src);" width="150px" height="80px"/>
+            </td>
+
+            <td align="center" valign="center">
+            <img src="./static/4.jpg" onclick="go(this.src);" width="150px" height="80px"/>
+            </td>
+
+
+
+            </table>
+
+        </div>
+        -->
+
+<script>
+function myFunction() {
+
+    document.getElementById("spinner").style.display='block'
+
+    document.getElementById("computing_text").style.display='block'
+
+
+}
+
+
+</script>
+
+
+
+</body>
+</html>
