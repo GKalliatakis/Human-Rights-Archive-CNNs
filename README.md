@@ -28,12 +28,12 @@ comprising a list of the types of human rights abuses encountered at present.
 The performance of the CNNs is listed below.
 
 <p align="center">
-  <img src="https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/table3.png?raw=true"/>
+  <img src="https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/table3.png?raw=true"/>
 </p>
 
 
 Some qualitative prediction results using the VGG16-Places365:
 
 <p align="center">
-  <img src="https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/fig8.png?raw=true"/>
+  <img src="https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/fig8.png?raw=true"/>
 </p>
