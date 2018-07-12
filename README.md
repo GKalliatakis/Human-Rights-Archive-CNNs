@@ -1,6 +1,8 @@
-# Human-Rights-Archive-CNNs
-Human Rights Violations Recognition with Deep Learning in Keras
+# Release of Human-Rights-Archive-CNNs
 
-## Overview
-This repository contains the code (written in Keras) for the 
-task of learning & transferring image representations for recognising human rights violations using CNNs.
+We release various convolutional neural networks (CNNs) trained on _Human Rights Archive (HRA)_ to the public.
+HRA is the first verified-by-experts repository of human rights violations photographs, labelled with human rights semantic categories,
+comprising a list of the types of human rights abuses encountered at present.
+
+## Pre-trained CNN models on HRA:
+

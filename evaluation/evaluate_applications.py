@@ -29,9 +29,9 @@ from handcrafted_metrics import top_k_accuracy_score
 
 
 # ==== Feature extraction/Fine-tuing model ======================================================================================================
-# pooling_mode = 'avg'
-# model = HRA_VGG16(weights='HRA', mode='fine_tuning', pooling_mode=pooling_mode, include_top=True, data_augm_enabled=False)
-# model.summary()
+pooling_mode = 'avg'
+model = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode=pooling_mode, include_top=True, data_augm_enabled=False)
+model.summary()
 # ===============================================================================================================================================
 
 
@@ -50,17 +50,17 @@ from handcrafted_metrics import top_k_accuracy_score
 # ==== Late-fusion =========================================================================================================
 # pooling_mode = 'max'
 
-model_a = HRA_VGG16(weights='HRA', mode='fine_tuning', pooling_mode='max', include_top=True, data_augm_enabled=False)
-model_a.summary()
-
-model_b = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode='flatten', include_top=True, data_augm_enabled=False)
-model_b.summary()
+# model_a = HRA_VGG16(weights='HRA', mode='fine_tuning', pooling_mode='max', include_top=True, data_augm_enabled=False)
+# model_a.summary()
+#
+# model_b = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode='flatten', include_top=True, data_augm_enabled=False)
+# model_b.summary()
 
 # ===============================================================================================================================================
 
 
 
-model_name='BEST_COVERAGE_late_fusion'
+model_name='VGG16_Places365 avg'
 
 
 
@@ -68,15 +68,15 @@ metrics = HRA_metrics(main_test_dir ='/home/sandbox/Desktop/Human_Rights_Archive
 
 [y_true, y_pred, y_score] = metrics.predict_labels(model)
 
-[y_true, y_pred] = metrics.duo_ensemble_predict_labels(model_a=model_a, model_b= model_b)
+# [y_true, y_pred] = metrics.duo_ensemble_predict_labels(model_a=model_a, model_b= model_b)
 
 
 # print y_true
 top1_acc = accuracy_score(y_true, y_pred)
 
 # top5_acc = top_k_accuracy_score(y_true=y_true, y_pred=y_pred,k=3,normalize=True)
-# coverage = metrics.coverage(model,prob_threshold=0.85)
-coverage = metrics.coverage_duo_ensemble(model_a,model_b,prob_threshold=0.85)
+coverage = metrics.coverage(model,prob_threshold=0.85)
+# coverage = metrics.coverage_duo_ensemble(model_a,model_b,prob_threshold=0.85)
 
 
 # AP = average_precision_score (y_true = y_true, y_score=y_score)
@@ -108,20 +108,20 @@ target_names = ['arms', 'child_labour', 'child_marriage', 'detention_centres', '
 #
 # print (precision_score(y_true, y_pred, average=None))
 #
-# cnf_matrix=confusion_matrix(y_true, y_pred)
-# np.set_printoptions(precision=2)
-#
-# # Plot non-normalized confusion matrix
-# plt.figure()
-# plot_confusion_matrix(cnf_matrix, classes=target_names,
-#                       title='Confusion matrix, without normalization')
-#
-# # Plot normalized confusion matrix
-# plt.figure()
-# plot_confusion_matrix(cnf_matrix, classes=target_names, normalize=True,
-#                       title='Normalized confusion matrix')
-#
-# plt.show()
-#
-#
-# print (cnf_matrix.diagonal()/cnf_matrix.sum(axis=1))
+cnf_matrix=confusion_matrix(y_true, y_pred)
+np.set_printoptions(precision=2)
+
+# Plot non-normalized confusion matrix
+plt.figure()
+plot_confusion_matrix(cnf_matrix, classes=target_names,
+                      title='Confusion matrix, without normalization')
+
+# Plot normalized confusion matrix
+plt.figure()
+plot_confusion_matrix(cnf_matrix, classes=target_names, normalize=True,
+                      title='Normalized confusion matrix')
+
+plt.show()
+
+
+print (cnf_matrix.diagonal()/cnf_matrix.sum(axis=1))
