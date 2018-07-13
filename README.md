@@ -55,8 +55,8 @@ and the class activation map together from Human-Rights-Archive-CNNs**
 
 ### Dependencies
 
-Keras 2.1.5 or above
-OpenCV (relevant only to `run_HRA_unified.py` where we generate an image that superimposes the original image with the class activation heatmap)
+* Keras 2.1.5 or above
+* OpenCV (relevant only to `run_HRA_unified.py` where we generate an image that superimposes the original image with the class activation heatmap)
 
 
 
@@ -83,7 +83,7 @@ The performance of the CNNs is listed below.
 | VGG16-places365 |         |   26.66%   |    51%   |     4,853,257     |
 
 
-Some qualitative prediction results using the VGG16-Places365:
+**Some qualitative prediction results using the VGG16-Places365:**
 
 <p align="center">
   <img src="https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/fig8.png?raw=true"/>
