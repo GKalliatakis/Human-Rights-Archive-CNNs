@@ -310,7 +310,7 @@ def baseline_model(include_top=True, weights= None,
 
 if __name__=="__main__":
 
-    model = baseline_model(classes=9, epochs=40, weights='HRA')
+    model = baseline_model(classes=9, epochs=10)
     model.summary()
 
 

@@ -164,11 +164,11 @@ def feature_extraction(pre_trained_model='VGG16',
                          'or `flatten` (Flatten).')
 
     # Define the name of the model and its weights
-    weights_name = 'feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
+    weights_name = 'cost_sensitive_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
 
-    augm_samples_weights_name = 'augm_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
+    augm_samples_weights_name = 'cost_sensitive_augm_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
 
-    model_log = logs_dir + 'feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_log.csv'
+    model_log = logs_dir + 'cost_sensitive_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_log.csv'
     csv_logger = CSVLogger(model_log, append=True, separator=',')
 
     input_tensor = Input(shape=(224, 224, 3))

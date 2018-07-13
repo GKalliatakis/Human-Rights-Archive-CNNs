@@ -1,21 +1,11 @@
-import matplotlib.pyplot as plt
-import numpy as np
+from applications.hra_vgg16_places365_no_weights import HRA_VGG16_Places365
+from sklearn.metrics import accuracy_score
 
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_score, average_precision_score,roc_curve
-
-from applications.hra_vgg16 import HRA_VGG16
-from applications.hra_vgg19 import HRA_VGG19
-from applications.hra_resnet50 import HRA_ResNet50
-from applications.hra_vgg16_places365 import HRA_VGG16_Places365
-from applications.compoundNet_vgg16 import CompoundNet_VGG16
-from applications.compoundNet_vgg19 import CompoundNet_VGG19
-from applications.compoundNet_resnet50 import CompoundNet_ResNet50
+# from applications.hra_vgg16 import HRA_VGG16
+# from applications.hra_vgg19 import HRA_VGG19
+# from applications.hra_resnet50 import HRA_ResNet50
+# from applications.hra_vgg16_places365 import HRA_VGG16_Places365
 from handcrafted_metrics import HRA_metrics
-from handcrafted_metrics import plot_confusion_matrix
-from applications.hra_baseline import baseline_model
-
-from handcrafted_metrics import top_k_accuracy_score
-
 
 # from applications.latest.hra_vgg16_checkpoint import HRA_VGG16
 # from applications.latest.hra_vgg16_places365 import HRA_VGG16_Places365
@@ -29,7 +19,7 @@ from handcrafted_metrics import top_k_accuracy_score
 
 
 # ==== Feature extraction/Fine-tuing model ======================================================================================================
-pooling_mode = 'avg'
+pooling_mode = 'max'
 model = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode=pooling_mode, include_top=True, data_augm_enabled=False)
 model.summary()
 # ===============================================================================================================================================
@@ -60,7 +50,7 @@ model.summary()
 
 
 
-model_name='VGG16_Places365 avg'
+model_name='VGG16_Places365_no_weights max'
 
 
 
@@ -108,20 +98,20 @@ target_names = ['arms', 'child_labour', 'child_marriage', 'detention_centres', '
 #
 # print (precision_score(y_true, y_pred, average=None))
 #
-cnf_matrix=confusion_matrix(y_true, y_pred)
-np.set_printoptions(precision=2)
-
-# Plot non-normalized confusion matrix
-plt.figure()
-plot_confusion_matrix(cnf_matrix, classes=target_names,
-                      title='Confusion matrix, without normalization')
-
-# Plot normalized confusion matrix
-plt.figure()
-plot_confusion_matrix(cnf_matrix, classes=target_names, normalize=True,
-                      title='Normalized confusion matrix')
-
-plt.show()
-
-
-print (cnf_matrix.diagonal()/cnf_matrix.sum(axis=1))
+# cnf_matrix=confusion_matrix(y_true, y_pred)
+# np.set_printoptions(precision=2)
+#
+# # Plot non-normalized confusion matrix
+# plt.figure()
+# plot_confusion_matrix(cnf_matrix, classes=target_names,
+#                       title='Confusion matrix, without normalization')
+#
+# # Plot normalized confusion matrix
+# plt.figure()
+# plot_confusion_matrix(cnf_matrix, classes=target_names, normalize=True,
+#                       title='Normalized confusion matrix')
+#
+# plt.show()
+#
+#
+# print (cnf_matrix.diagonal()/cnf_matrix.sum(axis=1))
