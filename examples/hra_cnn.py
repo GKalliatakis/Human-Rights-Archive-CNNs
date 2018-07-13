@@ -2,10 +2,9 @@
 """Trains a simple convnet on the Human Rights Archive (HRA) dataset.
 """
 
-from applications.hra_baseline import baseline_model
-from utils.predict import *
-from visualisations.integrated_gradients import integrated_gradients
 from applications.latest.hra_vgg19 import HRA_VGG19
+
+from utils.predict import *
 
 # model = baseline_model(classes=9, epochs=40, weights='HRA')
 

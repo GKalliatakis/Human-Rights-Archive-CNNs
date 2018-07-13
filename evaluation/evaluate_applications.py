@@ -1,6 +1,7 @@
-from applications.hra_vgg16_places365_no_weights import HRA_VGG16_Places365
 from sklearn.metrics import accuracy_score
 
+# from AUX_material.hra_baseline_class_weights import baseline_model
+from AUX_material.hra_baseline_no_class_weights import baseline_model
 # from applications.hra_vgg16 import HRA_VGG16
 # from applications.hra_vgg19 import HRA_VGG19
 # from applications.hra_resnet50 import HRA_ResNet50
@@ -11,17 +12,16 @@ from handcrafted_metrics import HRA_metrics
 # from applications.latest.hra_vgg16_places365 import HRA_VGG16_Places365
 # from applications.latest.compoundNet_vgg16_checkpoint import CompoundNet_VGG16
 
-
 # ==== Baseline model ===========================================================================================================================
-# model = baseline_model(classes=9, epochs=40, weights='HRA')
-# model.summary()
+model = baseline_model(classes=9, epochs=40, weights='HRA')
+model.summary()
 # ===============================================================================================================================================
 
 
 # ==== Feature extraction/Fine-tuing model ======================================================================================================
-pooling_mode = 'max'
-model = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode=pooling_mode, include_top=True, data_augm_enabled=False)
-model.summary()
+# pooling_mode = 'max'
+# model = HRA_VGG16_Places365(weights='HRA', mode='fine_tuning', pooling_mode=pooling_mode, include_top=True, data_augm_enabled=False)
+# model.summary()
 # ===============================================================================================================================================
 
 

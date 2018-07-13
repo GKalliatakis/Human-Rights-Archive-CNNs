@@ -7,11 +7,11 @@ Yann LeCun advocated in the 1990s for image classification (with the exception o
 
 ◾◾◾◾ Baseline mode ◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾
 ◾                                                                       ◾
-◾ baseline_10epochs  =>  0.1407                                         ◾
+◾ baseline_10epochs  =>  0.137037037037                                 ◾
 ◾                                                                       ◾
-◾ baseline_20epochs  =>  0.1259                                         ◾
+◾ baseline_20epochs  =>  0.155555555556                                 ◾
 ◾                                                                       ◾
-◾ baseline_40epochs  =>  0.1148                                         ◾
+◾ baseline_40epochs  =>  0.144444444444                                 ◾
 ◾                                                                       ◾
 ◾                                                                       ◾
 ◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾◾
@@ -39,9 +39,9 @@ from keras.models import Model
 from keras.applications.imagenet_utils import _obtain_input_shape
 
 
-WEIGHTS_PATH_10_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.2/cost_sensitive_baseline_10_weights_tf_dim_ordering_tf_kernels.h5'
-WEIGHTS_PATH_20_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.2/cost_sensitive_baseline_20_weights_tf_dim_ordering_tf_kernels.h5'
-WEIGHTS_PATH_40_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.2/cost_sensitive_baseline_40_weights_tf_dim_ordering_tf_kernels.h5'
+WEIGHTS_PATH_10_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/0.5/baseline_model_10_epochs_weights_tf_dim_ordering_tf_kernels.h5'
+WEIGHTS_PATH_20_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/0.5/baseline_model_20_epochs_weights_tf_dim_ordering_tf_kernels.h5'
+WEIGHTS_PATH_40_EPOCHS = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/0.5/baseline_model_40_epochs_weights_tf_dim_ordering_tf_kernels.h5'
 
 
 
@@ -151,19 +151,19 @@ def baseline_model(include_top=True, weights='HRA',
     # load weights
     if weights == 'HRA' and epochs == 10:
         if include_top:
-            weights_path = get_file('cost_sensitive_baseline_10_weights_tf_dim_ordering_tf_kernels.h5',
+            weights_path = get_file('baseline_model_10_epochs_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_10_EPOCHS,
                                     cache_subdir='hra_models')
 
     elif weights == 'HRA' and epochs == 20:
         if include_top:
-            weights_path = get_file('cost_sensitive_baseline_20_weights_tf_dim_ordering_tf_kernels.h5',
+            weights_path = get_file('baseline_model_20_epochs_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_20_EPOCHS,
                                     cache_subdir='hra_models')
 
     elif weights == 'HRA' and epochs == 40:
         if include_top:
-            weights_path = get_file('cost_sensitive_baseline_40_weights_tf_dim_ordering_tf_kernels.h5',
+            weights_path = get_file('baseline_model_40_epochs_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_40_EPOCHS,
                                     cache_subdir='hra_models')
 
@@ -171,4 +171,9 @@ def baseline_model(include_top=True, weights='HRA',
 
     return model
 
+
+if __name__=="__main__":
+
+    model = baseline_model(classes=9, epochs=40, weights='HRA')
+    model.summary()
 
