@@ -153,19 +153,19 @@ def baseline_model(include_top=True, weights='HRA',
         if include_top:
             weights_path = get_file('cost_sensitive_baseline_10_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_10_EPOCHS,
-                                    cache_subdir='hra_models')
+                                    cache_subdir='HRA_models')
 
     elif weights == 'HRA' and epochs == 20:
         if include_top:
             weights_path = get_file('cost_sensitive_baseline_20_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_20_EPOCHS,
-                                    cache_subdir='hra_models')
+                                    cache_subdir='HRA_models')
 
     elif weights == 'HRA' and epochs == 40:
         if include_top:
             weights_path = get_file('cost_sensitive_baseline_40_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH_40_EPOCHS,
-                                    cache_subdir='hra_models')
+                                    cache_subdir='HRA_models')
 
     model.load_weights(weights_path)
 

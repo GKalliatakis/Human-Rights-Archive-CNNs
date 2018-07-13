@@ -222,7 +222,7 @@ def CompoundNet_VGG16(include_top=True, weights=None,
     if weights == 'HRA' and classes != 9:
         raise ValueError('If using `weights` as Human Rights Archive, `classes` should be 9.')
 
-    cache_subdir = 'hra_models_fewer_params'
+    cache_subdir = 'HRA_models'
 
     # Determine proper input shape
     input_shape = _obtain_input_shape(input_shape,

@@ -18,12 +18,25 @@ There are 30 images per category in the testing set.
 * [Train/Validation images](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v1.0/train_val.zip)
 * [Test images](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v1.0/test.zip)
 
-### Pre-trained CNN models on HRA (`applications` module):
+### Models for image classification with weights trained on HRA (`applications` module):
 
-* Baseline model
-* ResNet50-HRA
-* VGG16-HRA
-* VGG16-Places365-HRA
+Pre-trained weights can be automatically loaded upon instantiation
+(weights='HRA' argument in model constructor for all models).
+Weights are automatically downloaded if necessary, and cached locally in `~/.keras/HRA_models/` just like the default `applications` module of
+the Keras deep learning library.
+
+All architectures are compatible with both TensorFlow and Theano,
+and upon instantiation the models will be built according to the
+image dimension ordering set in your Keras configuration file at ~/.keras/keras.json.
+For instance, if you have set image_dim_ordering=tf, then any model loaded from this repository
+will get built according to the TensorFlow dimension ordering convention, "Width-Height-Depth".
+
+This repository contains code for the following fine-tuned Keras models:
+
+* Baseline model (very similar to the architectures that Yann LeCun advocated in the 1990s)
+* ResNet50
+* VGG16
+* VGG16-Places365
 * VGG19
 * CompoundNet-ResNet50
 * CompoundNet-VGG16

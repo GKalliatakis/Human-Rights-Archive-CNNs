@@ -143,7 +143,7 @@ def HRA_VGG16(include_top=True, weights='HRA',
                          'If not, the returned model would have been literally the default '
                          'keras-applications model and not the one trained on HRA.')
 
-    cache_subdir = 'hra_models_fewer_params'
+    cache_subdir = 'HRA_models'
 
     # Determine proper input shape
     input_shape = _obtain_input_shape(input_shape,
