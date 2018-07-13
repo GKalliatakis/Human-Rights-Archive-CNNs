@@ -4,7 +4,7 @@ We release various convolutional neural networks (CNNs) trained on _Human Rights
 HRA is the first verified-by-experts repository of human rights violations photographs, labelled with human rights semantic categories,
 comprising a list of the types of human rights abuses encountered at present.
 
-## Data of Human Rights Archive
+### Data of Human Rights Archive
 
 Here we release the data of Human Rights Archive to the public.
 Human Rights Archive is the core set of HRA Database, which has been used to train the Human-Rights-Archive-CNNs.
@@ -18,7 +18,7 @@ There are 30 images per category in the testing set.
 * [Train/Validation images](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v1.0/train_val.zip)
 * [Test images](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v1.0/test.zip)
 
-## Pre-trained CNN models on HRA (`applications` module):
+### Pre-trained CNN models on HRA (`applications` module):
 
 * Baseline model
 * ResNet50-HRA
@@ -30,6 +30,8 @@ There are 30 images per category in the testing set.
 * CompoundNet-VGG19
 
 
+### Usage
+
 **Train Human-Rights-Archive-CNNs using Keras. The training script is [here](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/train_HRA.py).**
 
     Example
@@ -37,7 +39,28 @@ There are 30 images per category in the testing set.
     >>> python train_HRA.py --pre_trained_model VGG16 --pooling_mode avg
 
 
-## Performance of the Human-Rights-Archive-CNNs
+**Run [single image inference code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_basic.py) to get the human rights violations predictions from Human-Rights-Archive-CNNs
+
+    Example
+    --------
+    >>> python run_HRA_basic.py --img_path path/to/your/image/xxxx.jpg --pre_trained_model VGG16 --pooling_mode avg
+
+or [run unified code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_unified.py) to predict human rights violations categories,
+and the class activation map together from Human-Rights-Archive-CNNs**
+
+    Example
+    --------
+    >>> python run_HRA_unified.py --img_path path/to/your/image/xxx.jpg --pre_trained_model VGG16 --pooling_mode avg --to_file output_filename.png
+
+
+### Dependencies
+
+Keras 2.1.5 or above
+OpenCV (relevant only to `run_HRA_unified.py` where we generate an image that superimposes the original image with the class activation heatmap)
+
+
+
+### Performance of the Human-Rights-Archive-CNNs
 
 The performance of the CNNs is listed below.
 
@@ -68,7 +91,7 @@ Some qualitative prediction results using the VGG16-Places365:
 
 
 
-## Reference
+### Reference
 
 Please cite the following [paper](https://arxiv.org/pdf/1805.04714.pdf) if you use the data or pre-trained CNN models.
 

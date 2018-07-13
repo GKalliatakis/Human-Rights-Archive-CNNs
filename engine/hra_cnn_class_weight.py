@@ -40,19 +40,11 @@ magnitude of the updates stays very small, so as not to wreck the previously lea
 """
 
 import os
-import sys
 
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications.vgg19 import VGG19
-from keras.applications.resnet50 import ResNet50
-from keras.applications import VGG16
 from keras.optimizers import SGD
 from keras.models import Model
-from keras.layers import Input
 from keras.callbacks import CSVLogger
-from keras.layers import Dense, GlobalAveragePooling2D, GlobalMaxPooling2D, Flatten, Dropout
-
-from applications.vgg16_places_365 import VGG16_Places365
 
 import datetime
 import keras.backend as K
@@ -272,5 +264,9 @@ def baseline_model(include_top=True, weights=None,
 if __name__ == "__main__":
 
     baseline_model(epochs=10)
+
+    baseline_model(epochs=20)
+
+    baseline_model(epochs=40)
 
 
