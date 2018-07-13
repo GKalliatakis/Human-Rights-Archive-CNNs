@@ -39,13 +39,13 @@ There are 30 images per category in the testing set.
     >>> python train_HRA.py --pre_trained_model VGG16 --pooling_mode avg
 
 
-**Run [single image inference code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_basic.py) to get the human rights violations predictions from Human-Rights-Archive-CNNs
+**Run [single image inference code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_basic.py) to get the human rights violations predictions from Human-Rights-Archive-CNNs**
 
     Example
     --------
     >>> python run_HRA_basic.py --img_path path/to/your/image/xxxx.jpg --pre_trained_model VGG16 --pooling_mode avg
 
-or [run unified code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_unified.py) to predict human rights violations categories,
+**or [run unified code](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/run_HRA_unified.py) to predict human rights violations categories,
 and the class activation map together from Human-Rights-Archive-CNNs**
 
     Example
