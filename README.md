@@ -1,4 +1,4 @@
-# Release of Human-Rights-Archive-CNNs
+## Release of Human-Rights-Archive-CNNs
 
 We release various convolutional neural networks (CNNs) trained on _Human Rights Archive (HRA)_ to the public.
 HRA is the first verified-by-experts repository of human rights violations photographs, labelled with human rights semantic categories,
@@ -77,6 +77,7 @@ and the class activation map together from Human-Rights-Archive-CNNs**
 
 The performance of the CNNs is listed below.
 
+<center>
 
 |                 |   Pool  | Top-1 acc. | Coverage | Trainable Params. |
 |:---------------:|:-------:|:----------:|:--------:|:-----------------:|
@@ -95,6 +96,7 @@ The performance of the CNNs is listed below.
 |     ResNet50    |         |   25.55%   |    61%   |     4,992,521     |
 | VGG16-places365 |         |   26.66%   |    51%   |     4,853,257     |
 
+</center>
 
 **Some qualitative prediction results using the VGG16-Places365:**
 
