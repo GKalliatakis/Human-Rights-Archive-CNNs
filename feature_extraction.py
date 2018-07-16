@@ -132,8 +132,8 @@ class FeatureExtraction():
             train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
             test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 512))
 
-        train_labels = np.zeros(shape=(self.nb_train_samples))
-        test_labels = np.zeros(shape=(self.nb_test_samples))
+        train_labels = np.zeros(shape=(self.nb_train_samples,9))
+        test_labels = np.zeros(shape=(self.nb_test_samples,9))
 
         i = 0
         for inputs_batch, labels_batch in self.train_generator:
