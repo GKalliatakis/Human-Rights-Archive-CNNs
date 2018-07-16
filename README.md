@@ -104,6 +104,24 @@ The performance of the CNNs is listed below.
 
 
 
+### Human rights violations recognition demo
+**Does your image depict a human right violation? Upload to find out!**
+
+The application can be executed on a PC without Internet access or it can be installed on a remote server,
+where you can access it through the Internet.
+
+Run the following command to open up the application:
+
+    Example
+    --------
+    >>> python Human-Rights-Archive-CNNs/web_app/app.py
+
+
+Then you'll see the application opening in the web browser on the following address: http://0.0.0.0:5000/.
+
+---
+
+
 ### Reference
 
 Please cite the following [paper](https://arxiv.org/pdf/1805.04714.pdf) if you use the data or pre-trained CNN models.

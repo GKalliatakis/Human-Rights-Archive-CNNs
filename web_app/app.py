@@ -1,32 +1,9 @@
-#our web app framework!
-
-#you could also generate a skeleton from scratch via
-#http://flask-appbuilder.readthedocs.io/en/latest/installation.html
-
-#Generating HTML from within Python is not fun, and actually pretty cumbersome because you have to do the
-#HTML escaping on your own to keep the application secure. Because of that Flask configures the Jinja2 template engine 
-#for you automatically.
-#requests are objects that flask handles (get set post, etc)
-from flask import Flask, render_template,request
-#scientific computing library for saving, reading, and resizing images
-#for matrix math
-#for importing our keras model
-#for regular expressions, saves time dealing with string data
-import re
-
-#system level operations (like loading files)
-import sys 
-#for reading operating system data
-import os
-# for reading operating system data
 import os
 # scientific computing library for saving, reading, and resizing images
 # for matrix math
 # for importing our keras model
 # for regular expressions, saves time dealing with string data
 import re
-# system level operations (like loading files)
-import sys
 
 # Generating HTML from within Python is not fun, and actually pretty cumbersome because you have to do the
 # HTML escaping on your own to keep the application secure. Because of that Flask configures the Jinja2 template engine
@@ -34,22 +11,12 @@ import sys
 # requests are objects that flask handles (get set post, etc)
 from flask import Flask, render_template, request
 
-#tell our app where our saved model is
-sys.path.append(os.path.abspath("./model"))
-#from load import *
-
-from model.load import *
-
-
+import tensorflow as tf
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
-# from python.Learning_Image_Representations_for_Recognising_HRV.examples.master.hra_transfer_cnn import fine_tune
 from utils.predict import *
-from visualisations.grad_cam import Grad_CAM
-from applications.hra_vgg16 import HRA_VGG16
-from applications.hra_vgg16_places365 import HRA_VGG16_Places365
+from applications.hra_vgg19 import HRA_VGG19
 from hra_utils import *
-
 
 from PIL import Image
 
@@ -93,17 +60,15 @@ def upload():
         filename = photos.save(request.files['photo'])
 
         image_path = './static/img/' + filename
-        # image_path = '/home/user/Human-Rights-Archive-CNNs/web_app/static/img/' + filename
 
         #----------- Code to predict HRA category -----------
         # Code to predict HRA category
 
         with graph.as_default():
 
-            model = HRA_VGG16(weights='HRA', mode='fine_tuning', pooling_mode='avg')
+            model = HRA_VGG19(weights='HRA', mode='fine_tuning', pooling_mode='avg')
 
             img = image.load_img(image_path, target_size=(224, 224))
-
             # preprocess image
             x = image.img_to_array(img)
             x = np.expand_dims(x, axis=0)
@@ -114,26 +79,14 @@ def upload():
             list_label = decode_predictions_basic(preds, number_of_labels=5)
             top3_results = top3(labels=list_label)
 
-            print top3_results
 
-            top_preds = np.argsort(preds)[::-1][0:10]
+            im1 = Image.open(image_path)
+            # adjust width and height to your needs
+            width = 350
+            height = 350
+            im1 = im1.resize((width, height), Image.ANTIALIAS)  # best down-sizing filter
 
-            # load the class label
-            # file_name = '/home/user/Human-Rights-Archive-CNNs/web_app/categories_HRA.txt'
-            file_name = '/home/sandbox/Desktop/categories_HRA.txt'
-            classes = list()
-            with open(file_name) as class_file:
-                for line in class_file:
-                    classes.append(line.strip().split(' ')[0][3:])
-            classes = tuple(classes)
-
-            print('--HUMAN RIGHTS VIOLATIONS CATEGORIES:')
-            # output the prediction
-            for i in range(0, 5):
-                print(classes[top_preds[i]])
-
-
-
+            im1.save(image_path)
 
             return render_template('index.html', final_predictions_pt1=top3_results, image=image_path)
 
