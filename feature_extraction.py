@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
@@ -5,6 +6,46 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import VGG16,VGG19,ResNet50
 from applications.vgg16_places_365 import VGG16_Places365
 from keras.layers import Input
+from keras.utils.data_utils import get_file
+
+
+# permanent paths (as soon as it gets published)
+
+# VGG16_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG16.npy'
+# VGG16_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG16.npy'
+#
+# VGG19_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG19.npy'
+# VGG19_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG19.npy'
+#
+# ResNet50_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_ResNet50.npy'
+# ResNet50_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_ResNet50.npy'
+#
+# VGG16_Places365_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG16_Places365.npy'
+# VGG16_Places365_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG16_Places365.npy'
+
+
+
+# temporary paths
+
+VGG16_BOTTLENECK_TRAIN_FEATURES_PATH = ''
+VGG16_BOTTLENECK_TRAIN_LABELS_PATH = ''
+VGG16_BOTTLENECK_TEST_FEATURES_PATH = ''
+VGG16_BOTTLENECK_TEST_LABELS_PATH = ''
+
+VGG19_BOTTLENECK_TRAIN_FEATURES_PATH = ''
+VGG19_BOTTLENECK_TRAIN_LABELS_PATH = ''
+VGG19_BOTTLENECK_TEST_FEATURES_PATH = ''
+VGG19_BOTTLENECK_TEST_LABELS_PATH = ''
+
+ResNet50_BOTTLENECK_TRAIN_FEATURES_PATH = ''
+ResNet50_BOTTLENECK_TRAIN_LABELS_PATH = ''
+ResNet50_BOTTLENECK_TEST_FEATURES_PATH = ''
+ResNet50_BOTTLENECK_TEST_LABELS_PATH = ''
+
+VGG16_Places365_BOTTLENECK_TRAIN_FEATURES_PATH = ''
+VGG16_Places365_BOTTLENECK_TRAIN_LABELS_PATH = ''
+VGG16_Places365_BOTTLENECK_TEST_FEATURES_PATH = ''
+VGG16_Places365_BOTTLENECK_TEST_LABELS_PATH = ''
 
 
 class FeatureExtraction():
@@ -39,15 +80,16 @@ class FeatureExtraction():
 
         img_width, img_height = 224, 224
 
-        self.batch_size = 25
+        self.train_batch_size = 25
+        self.test_batch_size = 15
 
         self.train_generator = datagen.flow_from_directory(train_dir, target_size=(img_width, img_height),
                                                            classes=human_rights_classes, class_mode='categorical',
-                                                           batch_size=self.batch_size)
+                                                           batch_size=self.train_batch_size)
 
         self.test_generator = datagen.flow_from_directory(test_dir, target_size=(img_width, img_height),
                                                           classes=human_rights_classes, class_mode='categorical',
-                                                          batch_size=self.batch_size)
+                                                          batch_size=self.test_batch_size)
 
         if not (pre_trained_model in {'VGG16', 'VGG19', 'ResNet50', 'VGG16_Places365'}):
             raise ValueError('The `pre_trained_model` argument should be either '
@@ -69,25 +111,158 @@ class FeatureExtraction():
         elif pre_trained_model == 'VGG16_Places365':
             self.conv_base = VGG16_Places365(weights='places', include_top=False, input_tensor=input_tensor)
 
-        self.bottleneck_features_train_filename = 'bottleneck_features_train_' + pre_trained_model + '.npy'
-        self.bottleneck_features_test_filename = 'bottleneck_features_test_' + pre_trained_model + '.npy'
+        self.bottleneck_train_features_filename = 'bottleneck_train_features_' + pre_trained_model + '.npy'
+        self.bottleneck_train_labels_filename = 'bottleneck_train_labels_' + pre_trained_model + '.npy'
+        self.bottleneck_test_features_filename = 'bottleneck_test_features_' + pre_trained_model + '.npy'
+        self.bottleneck_test_labels_filename = 'bottleneck_test_labels_' + pre_trained_model + '.npy'
+
+        self.cache_subdir = 'HRA_models'
+        self.pre_trained_model = pre_trained_model
 
 
 
-    def save_bottlebeck_features(self):
+    def extract_bottlebeck_features(self):
 
-        bottleneck_features_train = self.conv_base.predict_generator(self.train_generator, self.nb_train_samples // self.batch_size)
-
-        np.save(open(self.bottleneck_features_train_filename, 'w'),bottleneck_features_train)
-
-        bottleneck_features_test = self.conv_base.predict_generator(self.test_generator, self.nb_test_samples // 15)
-        np.save(open(self.bottleneck_features_test_filename, 'w'),bottleneck_features_test)
+        if self.pre_trained_model == 'ResNet50':
+            train_features = np.zeros(shape=(self.nb_train_samples, 1, 1, 2048))
+            test_features = np.zeros(shape=(self.nb_test_samples, 1, 1, 2048))
 
 
+        else:
+            train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
+            test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 512))
+
+        train_labels = np.zeros(shape=(self.nb_train_samples))
+        test_labels = np.zeros(shape=(self.nb_test_samples))
+
+        i = 0
+        for inputs_batch, labels_batch in self.train_generator:
+            features_batch = self.conv_base.predict(inputs_batch)
+            train_features[i * self.train_batch_size: (i + 1) * self.train_batch_size] = features_batch
+            train_labels[i * self.train_batch_size: (i + 1) * self.train_batch_size] = labels_batch
+            i += 1
+            if i * self.train_batch_size >= self.nb_train_samples:
+                # Note that since generators yield data indefinitely in a loop,
+                # we must `break` after every image has been seen once.
+                break
+
+        np.save(open(self.bottleneck_train_features_filename, 'w'), train_features)
+        np.save(open(self.bottleneck_train_labels_filename, 'w'), train_labels)
+
+
+        j = 0
+        for test_inputs_batch, test_labels_batch in self.test_generator:
+            test_features_batch = self.conv_base.predict(test_inputs_batch)
+            test_features[j * self.test_batch_size: (j + 1) * self.test_batch_size] = test_features_batch
+            test_labels[j * self.test_batch_size: (j + 1) * self.test_batch_size] = test_labels_batch
+            j += 1
+            if j * self.test_batch_size >= self.nb_test_samples:
+                # Note that since generators yield data indefinitely in a loop,
+                # we must `break` after every image has been seen once.
+                break
+
+        np.save(open(self.bottleneck_test_features_filename, 'w'), test_features)
+        np.save(open(self.bottleneck_test_labels_filename, 'w'), test_labels)
+
+
+        # bottleneck_features_train = self.conv_base.predict_generator(self.train_generator, self.nb_train_samples // self.batch_size)
+        #
+        # np.save(open(self.bottleneck_train_features_filename, 'w'), bottleneck_features_train)
+        #
+        # bottleneck_features_test = self.conv_base.predict_generator(self.test_generator, self.nb_test_samples // 15)
+        # np.save(open(self.bottleneck_features_test_filename, 'w'),bottleneck_features_test)
+
+
+        return train_features, train_labels, test_features, test_labels
+
+
+
+    def load_bottlebeck_features(self):
+
+
+        # create the base pre-trained model for warm-up
+        if self.pre_trained_model == 'VGG16':
+            bottleneck_train_features_path = get_file('bottleneck_train_features_VGG16',
+                                                      VGG16_BOTTLENECK_TRAIN_FEATURES_PATH,
+                                                      cache_subdir=self.cache_subdir)
+
+            bottleneck_train_labels_path = get_file('bottleneck_train_labels_VGG16',
+                                                    VGG16_BOTTLENECK_TRAIN_LABELS_PATH,
+                                                    cache_subdir=self.cache_subdir)
+
+            bottleneck_test_features_path = get_file('bottleneck_test_features_VGG16',
+                                                     VGG16_BOTTLENECK_TEST_FEATURES_PATH,
+                                                     cache_subdir=self.cache_subdir)
+
+            bottleneck_test_labels_path = get_file('bottleneck_test_labels_VGG16',
+                                                   VGG16_BOTTLENECK_TEST_LABELS_PATH,
+                                                   cache_subdir=self.cache_subdir)
+
+        elif self.pre_trained_model == 'VGG19':
+            bottleneck_train_features_path = get_file('bottleneck_train_features_VGG19',
+                                                      VGG19_BOTTLENECK_TRAIN_FEATURES_PATH,
+                                                      cache_subdir=self.cache_subdir)
+
+            bottleneck_train_labels_path = get_file('bottleneck_train_labels_VGG19',
+                                                    VGG19_BOTTLENECK_TRAIN_LABELS_PATH,
+                                                    cache_subdir=self.cache_subdir)
+
+            bottleneck_test_features_path = get_file('bottleneck_test_features_VGG19',
+                                                     VGG19_BOTTLENECK_TEST_FEATURES_PATH,
+                                                     cache_subdir=self.cache_subdir)
+
+            bottleneck_test_labels_path = get_file('bottleneck_test_labels_VGG19',
+                                                   VGG19_BOTTLENECK_TEST_LABELS_PATH,
+                                                   cache_subdir=self.cache_subdir)
+
+
+        elif self.pre_trained_model == 'ResNet50':
+            bottleneck_train_features_path = get_file('bottleneck_train_features_ResNet50',
+                                                      ResNet50_BOTTLENECK_TRAIN_FEATURES_PATH,
+                                                      cache_subdir=self.cache_subdir)
+
+            bottleneck_train_labels_path = get_file('bottleneck_train_labels_ResNet50',
+                                                    ResNet50_BOTTLENECK_TRAIN_LABELS_PATH,
+                                                    cache_subdir=self.cache_subdir)
+
+            bottleneck_test_features_path = get_file('bottleneck_test_features_ResNet50',
+                                                     ResNet50_BOTTLENECK_TEST_FEATURES_PATH,
+                                                     cache_subdir=self.cache_subdir)
+
+            bottleneck_test_labels_path = get_file('bottleneck_test_labels_ResNet50',
+                                                   ResNet50_BOTTLENECK_TEST_LABELS_PATH,
+                                                   cache_subdir=self.cache_subdir)
+
+
+        elif self.pre_trained_model == 'VGG16_Places365':
+            bottleneck_train_features_path = get_file('bottleneck_train_features_VGG16_Places365',
+                                                      VGG16_Places365_BOTTLENECK_TRAIN_FEATURES_PATH,
+                                                      cache_subdir=self.cache_subdir)
+
+            bottleneck_train_labels_path = get_file('bottleneck_train_labels_VGG16_Places365',
+                                                    VGG16_Places365_BOTTLENECK_TRAIN_LABELS_PATH,
+                                                    cache_subdir=self.cache_subdir)
+
+            bottleneck_test_features_path = get_file('bottleneck_test_features_VGG16_Places365',
+                                                     VGG16_Places365_BOTTLENECK_TEST_FEATURES_PATH,
+                                                     cache_subdir=self.cache_subdir)
+
+            bottleneck_test_labels_path = get_file('bottleneck_test_labels_VGG16_Places365',
+                                                   VGG16_Places365_BOTTLENECK_TEST_LABELS_PATH,
+                                                   cache_subdir=self.cache_subdir)
+
+
+        train_data = np.load(open(bottleneck_train_features_path, 'rb'))
+        train_labels = np.load(open(bottleneck_train_labels_path, 'rb'))
+
+        test_data = np.load(open(bottleneck_test_features_path, 'rb'))
+        test_labels = np.load(open(bottleneck_test_labels_path, 'rb'))
+
+        return train_data, train_labels, test_data, test_labels
 
     def train_classifier(self):
 
-        train_data = np.load(open(self.bottleneck_features_train_filename, 'rb'))
+        train_data = np.load(open(self.bottleneck_train_features_filename, 'rb'))
         train_labels = np.array([0] * ( self.nb_train_samples // 9) + [1] * ( self.nb_train_samples // 9))
 
         test_data = np.load(open(self.bottleneck_features_test_filename, 'rb'))
@@ -98,7 +273,7 @@ class FeatureExtraction():
 import argparse
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pre_trained_model", type = str,help = 'One of `VGG`, `VGG19`, `ResNet50` or `VGG16_Places365`')
+    parser.add_argument("--pre_trained_model", type = str,help = 'One of `VGG16`, `VGG19`, `ResNet50` or `VGG16_Places365`')
 
 
     args = parser.parse_args()
@@ -118,7 +293,14 @@ if __name__ == '__main__':
 
     feature_extraction = FeatureExtraction(pre_trained_model = args.pre_trained_model)
 
-    feature_extraction.save_bottlebeck_features()
+    train_features, train_labels, test_features, test_labels = feature_extraction.extract_bottlebeck_features()
+    # train_data, train_labels, test_data, test_labels = feature_extraction.load_bottlebeck_features()
+
+    print(train_features.shape)
+    print(train_labels.shape)
+    print(test_features.shape)
+    print(test_labels.shape)
+
 
 
 
