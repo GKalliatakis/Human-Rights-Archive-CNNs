@@ -124,8 +124,8 @@ class FeatureExtraction():
     def extract_bottlebeck_features(self):
 
         if self.pre_trained_model == 'ResNet50':
-            bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 1, 1, 2048))
-            bottleneck_test_features = np.zeros(shape=(self.nb_test_samples, 1, 1, 2048))
+            bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 2048))
+            bottleneck_test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 2048))
 
         else:
             bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
