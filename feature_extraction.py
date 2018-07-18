@@ -27,15 +27,15 @@ from keras.utils.data_utils import get_file
 
 # temporary paths
 
-VGG16_BOTTLENECK_TRAIN_FEATURES_PATH = ''
-VGG16_BOTTLENECK_TRAIN_LABELS_PATH = ''
-VGG16_BOTTLENECK_TEST_FEATURES_PATH = ''
-VGG16_BOTTLENECK_TEST_LABELS_PATH = ''
+VGG16_BOTTLENECK_TRAIN_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_features_VGG16.npy'
+VGG16_BOTTLENECK_TRAIN_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_labels_VGG16.npy'
+VGG16_BOTTLENECK_TEST_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_features_VGG16.npy'
+VGG16_BOTTLENECK_TEST_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_labels_VGG16.npy'
 
-VGG19_BOTTLENECK_TRAIN_FEATURES_PATH = ''
-VGG19_BOTTLENECK_TRAIN_LABELS_PATH = ''
-VGG19_BOTTLENECK_TEST_FEATURES_PATH = ''
-VGG19_BOTTLENECK_TEST_LABELS_PATH = ''
+VGG19_BOTTLENECK_TRAIN_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_features_VGG19.npy'
+VGG19_BOTTLENECK_TRAIN_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_labels_VGG19.npy'
+VGG19_BOTTLENECK_TEST_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_features_VGG19.npy'
+VGG19_BOTTLENECK_TEST_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_labels_VGG19.npy'
 
 ResNet50_BOTTLENECK_TRAIN_FEATURES_PATH = ''
 ResNet50_BOTTLENECK_TRAIN_LABELS_PATH = ''
@@ -67,9 +67,9 @@ class FeatureExtraction():
         self.nb_train_samples = 3050
         self.nb_test_samples = 270
 
-        human_rights_classes = ['arms', 'child_labour', 'child_marriage', 'detention_centres',
-                                'disability_rights', 'displaced_populations', 'environment',
-                                'no_violation', 'out_of_school']
+        # human_rights_classes = ['arms', 'child_labour', 'child_marriage', 'detention_centres',
+        #                         'disability_rights', 'displaced_populations', 'environment',
+        #                         'no_violation', 'out_of_school']
 
         # Augmentation configuration with only rescaling.
         # Rescale is a value by which we will multiply the data before any other processing.
@@ -84,11 +84,11 @@ class FeatureExtraction():
         self.test_batch_size = 15
 
         self.train_generator = datagen.flow_from_directory(train_dir, target_size=(img_width, img_height),
-                                                           classes=human_rights_classes, class_mode='categorical',
+                                                           class_mode='categorical',
                                                            batch_size=self.train_batch_size)
 
         self.test_generator = datagen.flow_from_directory(test_dir, target_size=(img_width, img_height),
-                                                          classes=human_rights_classes, class_mode='categorical',
+                                                          class_mode='categorical',
                                                           batch_size=self.test_batch_size)
 
         if not (pre_trained_model in {'VGG16', 'VGG19', 'ResNet50', 'VGG16_Places365'}):
@@ -124,21 +124,20 @@ class FeatureExtraction():
     def extract_bottlebeck_features(self):
 
         if self.pre_trained_model == 'ResNet50':
-            train_features = np.zeros(shape=(self.nb_train_samples, 1, 1, 2048))
-            test_features = np.zeros(shape=(self.nb_test_samples, 1, 1, 2048))
-
+            bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 1, 1, 2048))
+            bottleneck_test_features = np.zeros(shape=(self.nb_test_samples, 1, 1, 2048))
 
         else:
-            train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
-            test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 512))
+            bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
+            bottleneck_test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 512))
 
-        train_labels = np.zeros(shape=(self.nb_train_samples,9))
-        test_labels = np.zeros(shape=(self.nb_test_samples,9))
+        train_labels = np.zeros(shape=(self.nb_train_samples))
+        test_labels = np.zeros(shape=(self.nb_test_samples))
 
         i = 0
         for inputs_batch, labels_batch in self.train_generator:
             features_batch = self.conv_base.predict(inputs_batch)
-            train_features[i * self.train_batch_size: (i + 1) * self.train_batch_size] = features_batch
+            bottleneck_train_features[i * self.train_batch_size: (i + 1) * self.train_batch_size] = features_batch
             train_labels[i * self.train_batch_size: (i + 1) * self.train_batch_size] = labels_batch
             i += 1
             if i * self.train_batch_size >= self.nb_train_samples:
@@ -146,14 +145,14 @@ class FeatureExtraction():
                 # we must `break` after every image has been seen once.
                 break
 
-        np.save(open(self.bottleneck_train_features_filename, 'w'), train_features)
+        np.save(open(self.bottleneck_train_features_filename, 'w'), bottleneck_train_features)
         np.save(open(self.bottleneck_train_labels_filename, 'w'), train_labels)
 
 
         j = 0
         for test_inputs_batch, test_labels_batch in self.test_generator:
             test_features_batch = self.conv_base.predict(test_inputs_batch)
-            test_features[j * self.test_batch_size: (j + 1) * self.test_batch_size] = test_features_batch
+            bottleneck_test_features[j * self.test_batch_size: (j + 1) * self.test_batch_size] = test_features_batch
             test_labels[j * self.test_batch_size: (j + 1) * self.test_batch_size] = test_labels_batch
             j += 1
             if j * self.test_batch_size >= self.nb_test_samples:
@@ -161,19 +160,11 @@ class FeatureExtraction():
                 # we must `break` after every image has been seen once.
                 break
 
-        np.save(open(self.bottleneck_test_features_filename, 'w'), test_features)
+        np.save(open(self.bottleneck_test_features_filename, 'w'), bottleneck_test_features)
         np.save(open(self.bottleneck_test_labels_filename, 'w'), test_labels)
 
 
-        # bottleneck_features_train = self.conv_base.predict_generator(self.train_generator, self.nb_train_samples // self.batch_size)
-        #
-        # np.save(open(self.bottleneck_train_features_filename, 'w'), bottleneck_features_train)
-        #
-        # bottleneck_features_test = self.conv_base.predict_generator(self.test_generator, self.nb_test_samples // 15)
-        # np.save(open(self.bottleneck_features_test_filename, 'w'),bottleneck_features_test)
-
-
-        return train_features, train_labels, test_features, test_labels
+        return bottleneck_train_features, train_labels, bottleneck_test_features, test_labels
 
 
 
@@ -280,6 +271,22 @@ def get_args():
     return args
 
 if __name__ == '__main__':
+    # visualize confusion matrix on heat map
+    import pandas as pd
+    import seaborn as sn
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import confusion_matrix
+
+
+    def print_cmx(y_true, y_pred):
+        labels = sorted(list(set(y_true)))
+        cmx_data = confusion_matrix(y_true, y_pred, labels=labels)
+
+        df_cmx = pd.DataFrame(cmx_data, index=labels, columns=labels)
+
+        plt.figure(figsize=(10, 7))
+        sn.heatmap(df_cmx, annot=True)
+        plt.show()
 
     # --------- Configure and pass a tensorflow session to Keras to restrict GPU memory fraction --------- #
     import tensorflow as tf
@@ -290,17 +297,51 @@ if __name__ == '__main__':
     set_session(tf.Session(config=config))
 
     args = get_args()
+    # pre_trained_model = 'VGG16'
 
     feature_extraction = FeatureExtraction(pre_trained_model = args.pre_trained_model)
 
     train_features, train_labels, test_features, test_labels = feature_extraction.extract_bottlebeck_features()
-    # train_data, train_labels, test_data, test_labels = feature_extraction.load_bottlebeck_features()
 
-    print(train_features.shape)
-    print(train_labels.shape)
-    print(test_features.shape)
-    print(test_labels.shape)
+    #
+    # train_features, train_labels, test_features, test_labels = feature_extraction.load_bottlebeck_features()
+
+    print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
+
+    # if pre_trained_model == 'ResNet50':
+    #     train_features = np.reshape(train_features, (3050, 1 * 1 * 2048))
+    #     test_features = np.reshape(test_features, (270, 1 * 1 * 2048))
+    #
+    # else:
+    #     train_features = np.reshape(train_features, (3050, 7 * 7 * 512))
+    #     test_features = np.reshape(test_features, (270, 7 * 7 * 512))
+    #
+    # print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
 
 
 
-
+    #
+    # from sklearn.neighbors import KNeighborsClassifier
+    # from sklearn.model_selection import GridSearchCV
+    #
+    # parameters = {"n_neighbors": [1, 5, 10, 30],
+    #               "weights": ['uniform', 'distance'],
+    #               "metric": ['minkowski', 'euclidean', 'manhattan'],
+    #               "algorithm": ['auto', 'ball_tree', 'kd_tree', 'brute']}
+    # kclf = KNeighborsClassifier()
+    # kgclf = GridSearchCV(kclf, param_grid=parameters)
+    # kgclf.fit(train_features, train_labels)
+    #
+    # kclf = kgclf.best_estimator_
+    # kclf.fit(train_features, train_labels)
+    #
+    # y_testKNN = kclf.predict(test_features)
+    #
+    # from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+    #
+    # print_cmx(test_labels.T[0], y_testKNN)
+    # print(classification_report(test_labels, y_testKNN))
+    # print("Accuracy: {0}".format(accuracy_score(test_labels, y_testKNN)))
+    #
+    #
+    #
