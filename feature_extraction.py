@@ -42,10 +42,10 @@ ResNet50_BOTTLENECK_TRAIN_LABELS_PATH = ''
 ResNet50_BOTTLENECK_TEST_FEATURES_PATH = ''
 ResNet50_BOTTLENECK_TEST_LABELS_PATH = ''
 
-VGG16_Places365_BOTTLENECK_TRAIN_FEATURES_PATH = ''
-VGG16_Places365_BOTTLENECK_TRAIN_LABELS_PATH = ''
-VGG16_Places365_BOTTLENECK_TEST_FEATURES_PATH = ''
-VGG16_Places365_BOTTLENECK_TEST_LABELS_PATH = ''
+VGG16_Places365_BOTTLENECK_TRAIN_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_features_VGG16_Places365.npy'
+VGG16_Places365_BOTTLENECK_TRAIN_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_labels_VGG16_Places365.npy'
+VGG16_Places365_BOTTLENECK_TEST_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_features_VGG16_Places365.npy'
+VGG16_Places365_BOTTLENECK_TEST_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_test_labels_VGG16_Places365.npy'
 
 
 class FeatureExtraction():
@@ -61,6 +61,7 @@ class FeatureExtraction():
 
         # Base directory of raw jpg/png images
         base_dir = '/home/gkallia/git/Human-Rights-Archive-CNNs/datasets/Human_Rights_Archive_DB'
+        base_dir = '/home/sandbox/Desktop/Untitled'
 
         train_dir = os.path.join(base_dir, 'train_val')
         test_dir = os.path.join(base_dir, 'test')
@@ -250,14 +251,6 @@ class FeatureExtraction():
 
         return train_data, train_labels, test_data, test_labels
 
-    def train_classifier(self):
-
-        train_data = np.load(open(self.bottleneck_train_features_filename, 'rb'))
-        train_labels = np.array([0] * ( self.nb_train_samples // 9) + [1] * ( self.nb_train_samples // 9))
-
-        test_data = np.load(open(self.bottleneck_features_test_filename, 'rb'))
-        test_labels = np.array([0] * (self.nb_test_samples // 9) + [1] * ( self.nb_test_samples // 9))
-
 
 
 import argparse
@@ -298,19 +291,20 @@ if __name__ == '__main__':
     set_session(tf.Session(config=config))
 
     args = get_args()
-    # pre_trained_model = 'VGG16'
+    feature_extraction = FeatureExtraction(pre_trained_model=args.pre_trained_model)
 
-    feature_extraction = FeatureExtraction(pre_trained_model = args.pre_trained_model)
+    # pre_trained_model = 'VGG16_Places365'
+    # feature_extraction = FeatureExtraction(pre_trained_model=pre_trained_model)
+
 
     train_features, train_labels, test_features, test_labels = feature_extraction.extract_bottlebeck_features()
 
-    #
+
     # train_features, train_labels, test_features, test_labels = feature_extraction.load_bottlebeck_features()
-
-    print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
-
-
-    print (train_labels[0])
+    #
+    # print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
+    #
+    #
     # if pre_trained_model == 'ResNet50':
     #     train_features = np.reshape(train_features, (3050, 1 * 1 * 2048))
     #     test_features = np.reshape(test_features, (270, 1 * 1 * 2048))
@@ -320,31 +314,25 @@ if __name__ == '__main__':
     #     test_features = np.reshape(test_features, (270, 7 * 7 * 512))
     #
     # print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
-
-
-
+    #
+    #
+    #
     #
     # from sklearn.neighbors import KNeighborsClassifier
     # from sklearn.model_selection import GridSearchCV
     #
-    # parameters = {"n_neighbors": [1, 5, 10, 30],
-    #               "weights": ['uniform', 'distance'],
-    #               "metric": ['minkowski', 'euclidean', 'manhattan'],
-    #               "algorithm": ['auto', 'ball_tree', 'kd_tree', 'brute']}
-    # kclf = KNeighborsClassifier()
-    # kgclf = GridSearchCV(kclf, param_grid=parameters)
-    # kgclf.fit(train_features, train_labels)
     #
-    # kclf = kgclf.best_estimator_
-    # kclf.fit(train_features, train_labels)
+    # # Create and fit a nearest-neighbor classifier
+    # knn = KNeighborsClassifier()
+    # knn.fit(train_features, train_labels)
+    # KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+    #                             metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+    #                             weights='uniform')
     #
-    # y_testKNN = kclf.predict(test_features)
+    # # reference
+    # # https: // gurus.pyimagesearch.com / lesson - sample - k - nearest - neighbor - classification /
     #
-    # from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+    # # evaluate the model and update the accuracies list
+    # score = knn.score(test_features, test_labels)
     #
-    # print_cmx(test_labels.T[0], y_testKNN)
-    # print(classification_report(test_labels, y_testKNN))
-    # print("Accuracy: {0}".format(accuracy_score(test_labels, y_testKNN)))
-    #
-    #
-    #
+    # print (score)

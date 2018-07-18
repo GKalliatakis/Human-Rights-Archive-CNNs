@@ -81,6 +81,68 @@ class HRA_metrics():
 
 
 
+    def predict_labels_KNeighborsClassifier(self,
+                                            classifier):
+        """Computes the predicted and ground truth labels, as returned by a single classifier.
+
+            # Arguments
+                model = keras model for which we want to predict the labels.
+
+            # Returns
+                y_true : 1d array-like containing the ground truth (correct) labels.
+                y_pred : 1d array-like containing the predicted labels, as returned by a classifier.
+        """
+        y_pred = []
+        y_true= []
+        y_score = []
+
+        for hra_class in self.sorted_categories_names:
+
+            # variable that contains the main dir alongside the selected category
+            tmp = os.path.join(self.main_test_dir, hra_class)
+            img_names = sorted(os.listdir(tmp))
+
+            for raw_img in img_names:
+
+                if hra_class == 'arms':
+                    true_label = 0
+                elif hra_class == 'child_labour':
+                    true_label = 1
+                elif hra_class == 'child_marriage':
+                    true_label = 2
+                elif hra_class == 'detention_centres':
+                    true_label = 3
+                elif hra_class == 'disability_rights':
+                    true_label = 4
+                elif hra_class == 'displaced_populations':
+                    true_label = 5
+                elif hra_class == 'environment':
+                    true_label = 6
+                elif hra_class == 'no_violation':
+                    true_label = 7
+                elif hra_class == 'out_of_school':
+                    true_label = 8
+
+                y_true.append(true_label)
+
+
+                # variable that contains the final image to be loaded
+                print ('Processing  [' + raw_img + ']')
+                final_img = os.path.join(tmp, raw_img)
+                img = image.load_img(final_img, target_size=(224, 224))
+
+                preds = predict(model, img, target_size)
+
+                y_pred.append(int(preds[0][0]))
+                y_score.append(int(preds[0][2]))
+
+
+        print y_pred
+
+        return y_true, y_pred, y_score
+
+
+
     def duo_ensemble_predict_labels(self,
                                     model_a,
                                     model_b):
