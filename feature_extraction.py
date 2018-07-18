@@ -61,7 +61,7 @@ class FeatureExtraction():
 
         # Base directory of raw jpg/png images
         base_dir = '/home/gkallia/git/Human-Rights-Archive-CNNs/datasets/Human_Rights_Archive_DB'
-        base_dir = '/home/sandbox/Desktop/Untitled'
+        # base_dir = '/home/sandbox/Desktop/Untitled'
 
         train_dir = os.path.join(base_dir, 'train_val')
         test_dir = os.path.join(base_dir, 'test')
