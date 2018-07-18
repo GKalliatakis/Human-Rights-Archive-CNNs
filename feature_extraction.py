@@ -82,13 +82,12 @@ class FeatureExtraction():
 
         self.train_batch_size = 25
         self.test_batch_size = 15
-        # categorical
         self.train_generator = datagen.flow_from_directory(train_dir, target_size=(img_width, img_height),
-                                                           class_mode='binary',
+                                                           class_mode='categorical',
                                                            batch_size=self.train_batch_size)
 
         self.test_generator = datagen.flow_from_directory(test_dir, target_size=(img_width, img_height),
-                                                          class_mode='binary',
+                                                          class_mode='categorical',
                                                           batch_size=self.test_batch_size)
 
         if not (pre_trained_model in {'VGG16', 'VGG19', 'ResNet50', 'VGG16_Places365'}):
@@ -131,8 +130,8 @@ class FeatureExtraction():
             bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 512))
             bottleneck_test_features = np.zeros(shape=(self.nb_test_samples, 7, 7, 512))
 
-        train_labels = np.zeros(shape=(self.nb_train_samples))
-        test_labels = np.zeros(shape=(self.nb_test_samples))
+        train_labels = np.zeros(shape=(self.nb_train_samples, self.train_generator.num_classes))
+        test_labels = np.zeros(shape=(self.nb_test_samples, self.test_generator.num_classes))
 
         i = 0
         for inputs_batch, labels_batch in self.train_generator:
