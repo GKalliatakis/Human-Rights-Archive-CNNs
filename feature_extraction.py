@@ -310,6 +310,8 @@ if __name__ == '__main__':
 
     print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
 
+
+    print (train_labels[0])
     # if pre_trained_model == 'ResNet50':
     #     train_features = np.reshape(train_features, (3050, 1 * 1 * 2048))
     #     test_features = np.reshape(test_features, (270, 1 * 1 * 2048))
