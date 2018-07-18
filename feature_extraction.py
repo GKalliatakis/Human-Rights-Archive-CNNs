@@ -82,13 +82,13 @@ class FeatureExtraction():
 
         self.train_batch_size = 25
         self.test_batch_size = 15
-
+        # categorical
         self.train_generator = datagen.flow_from_directory(train_dir, target_size=(img_width, img_height),
                                                            class_mode='binary',
                                                            batch_size=self.train_batch_size)
 
         self.test_generator = datagen.flow_from_directory(test_dir, target_size=(img_width, img_height),
-                                                          class_mode='categorical',
+                                                          class_mode='binary',
                                                           batch_size=self.test_batch_size)
 
         if not (pre_trained_model in {'VGG16', 'VGG19', 'ResNet50', 'VGG16_Places365'}):
