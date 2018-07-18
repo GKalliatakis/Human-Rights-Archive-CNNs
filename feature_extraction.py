@@ -272,21 +272,21 @@ def get_args():
 
 if __name__ == '__main__':
     # visualize confusion matrix on heat map
-    import pandas as pd
-    import seaborn as sn
-    import matplotlib.pyplot as plt
-    from sklearn.metrics import confusion_matrix
-
-
-    def print_cmx(y_true, y_pred):
-        labels = sorted(list(set(y_true)))
-        cmx_data = confusion_matrix(y_true, y_pred, labels=labels)
-
-        df_cmx = pd.DataFrame(cmx_data, index=labels, columns=labels)
-
-        plt.figure(figsize=(10, 7))
-        sn.heatmap(df_cmx, annot=True)
-        plt.show()
+    # import pandas as pd
+    # import seaborn as sn
+    # import matplotlib.pyplot as plt
+    # from sklearn.metrics import confusion_matrix
+    #
+    #
+    # def print_cmx(y_true, y_pred):
+    #     labels = sorted(list(set(y_true)))
+    #     cmx_data = confusion_matrix(y_true, y_pred, labels=labels)
+    #
+    #     df_cmx = pd.DataFrame(cmx_data, index=labels, columns=labels)
+    #
+    #     plt.figure(figsize=(10, 7))
+    #     sn.heatmap(df_cmx, annot=True)
+    #     plt.show()
 
     # --------- Configure and pass a tensorflow session to Keras to restrict GPU memory fraction --------- #
     import tensorflow as tf
