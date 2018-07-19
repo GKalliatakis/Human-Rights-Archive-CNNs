@@ -43,6 +43,14 @@ This repository contains code for the following fine-tuned Keras models:
 * CompoundNet-VGG19
 
 
+### Git
+
+To download the very latest source from the Git server do this:
+
+    git clone https://github.com/GKalliatakis/Human-Rights-Archive-CNNs.git
+
+(you'll get a directory named Human-Rights-Archive-CNNs created, filled with the source code)
+
 ### Usage
 
 **Train Human-Rights-Archive-CNNs using Keras. The training script is [here](https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/blob/master/train_HRA.py).**

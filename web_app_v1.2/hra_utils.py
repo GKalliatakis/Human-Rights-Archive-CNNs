@@ -45,21 +45,21 @@ def convert_index2name(index):
     if index == 0:
         return "Arms"
     elif index ==1:
-        return "ChildLabour"
+        return "Child-labour"
     elif index == 2:
-        return "ChildMarriage"
+        return "Child-marriage"
     elif index == 3:
-        return "DetentionCentres"
+        return "Detention-centres"
     elif index == 4:
-        return "Disability"
+        return "Disability-rights"
     elif index == 5:
-        return "Environment"
+        return "Displaced-populations"
     elif index == 6:
-        return "NoViolation"
+        return "Environment"
     elif index == 7:
-        return "OutOfSchool"
+        return "NO-VIOLATION"
     elif index == 8:
-        return "Refugees"
+        return "Out-of-school"
     else:
         raise Exception("Wrong length :", index)
 
@@ -109,7 +109,8 @@ def plot_preds(image, preds):
   plt.axis('off')
 
   plt.figure()
-  labels = ("Arms", "ChildLabour", "ChildMarriage", "DetentionCentres", "Disability", "Environment", "NoViolation", "OutOfSchool", "Refugees")
+  labels = ("Arms", "Child-labour", "Child-marriage", "Detention-centres", "Disability-rights",
+            "Displaced-populations", "Environment", "NO-VIOLATION", "Out-of-school")
   plt.barh(order, preds, alpha=0.65)
   plt.yticks(order, labels)
   plt.xlabel('Probability')
