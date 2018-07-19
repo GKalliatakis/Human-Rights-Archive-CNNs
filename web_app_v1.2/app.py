@@ -14,11 +14,13 @@ from flask import Flask, render_template, request
 import tensorflow as tf
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
-from utils.predict import *
+# from utils.predict import *
 from applications.hra_vgg19 import HRA_VGG19
 from hra_utils import *
 
 from PIL import Image
+from keras.preprocessing import image
+from keras.applications.inception_v3 import preprocess_input
 
 #initalize the flask app
 app = Flask(__name__)
