@@ -1,3 +1,5 @@
+"""Python utilities required by HRA."""
+
 import json
 
 import keras.backend as K

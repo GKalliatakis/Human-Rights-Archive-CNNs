@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""Feature extraction consists of using the representations learned by a previous network to extract interesting features from new samples.
+These features are then run through a new classifier, which is trained from scratch.
+
+Reference
+http://nbviewer.jupyter.org/github/fchollet/deep-learning-with-python-notebooks/blob/master/5.3-using-a-pretrained-convnet.ipynb
+
+"""
 from __future__ import print_function
 import os
 import numpy as np
@@ -8,24 +16,6 @@ from applications.vgg16_places_365 import VGG16_Places365
 from keras.layers import Input
 from keras.utils.data_utils import get_file
 
-
-# permanent paths (as soon as it gets published)
-
-# VGG16_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG16.npy'
-# VGG16_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG16.npy'
-#
-# VGG19_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG19.npy'
-# VGG19_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG19.npy'
-#
-# ResNet50_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_ResNet50.npy'
-# ResNet50_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_ResNet50.npy'
-#
-# VGG16_Places365_BOTTLENECK_FEATURES_TRAIN_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_train_VGG16_Places365.npy'
-# VGG16_Places365_BOTTLENECK_FEATURES_TEST_PATH = 'https://github.com/GKalliatakis/Human-Rights-Archive-CNNs/releases/download/v0.5/bottleneck_features_test_VGG16_Places365.npy'
-
-
-
-# temporary paths
 
 VGG16_BOTTLENECK_TRAIN_FEATURES_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_features_VGG16.npy'
 VGG16_BOTTLENECK_TRAIN_LABELS_PATH = 'https://github.com/GKalliatakis/crispy-enigma/releases/download/v0.3/bottleneck_train_labels_VGG16.npy'
@@ -60,8 +50,8 @@ class FeatureExtraction():
         """
 
         # Base directory of raw jpg/png images
-        base_dir = '/home/gkallia/git/Human-Rights-Archive-CNNs/datasets/Human_Rights_Archive_DB'
-        # base_dir = '/home/sandbox/Desktop/Untitled'
+        # base_dir = '/home/gkallia/git/Human-Rights-Archive-CNNs/datasets/Human_Rights_Archive_DB'
+        base_dir = '/home/sandbox/Desktop/Untitled'
 
         train_dir = os.path.join(base_dir, 'train_val')
         test_dir = os.path.join(base_dir, 'test')
@@ -122,6 +112,22 @@ class FeatureExtraction():
 
 
     def extract_bottlebeck_features(self):
+        """Extracts bottleneck features for train and test sets.
+
+            # Returns
+                bottleneck_train_features : array-like, shape = (n_samples, n_features)
+                    Train samples.
+                train_labels : array-like, shape = (n_samples, n_outputs)
+                    True labels for train samples.
+                bottleneck_test_features : array-like, shape = (n_samples, n_features)
+                    Test samples.
+                test_labels : array-like, shape = (n_samples, n_outputs)
+                    True labels for test samples.
+
+        Reference
+        http://nbviewer.jupyter.org/github/fchollet/deep-learning-with-python-notebooks/blob/master/5.3-using-a-pretrained-convnet.ipynb
+
+        """
 
         if self.pre_trained_model == 'ResNet50':
             bottleneck_train_features = np.zeros(shape=(self.nb_train_samples, 7, 7, 2048))
@@ -169,6 +175,18 @@ class FeatureExtraction():
 
 
     def load_bottlebeck_features(self):
+        """Loads previously saved bottleneck features for train and test sets.
+
+            # Returns
+                bottleneck_train_features : array-like, shape = (n_samples, n_features)
+                    Train samples.
+                train_labels : array-like, shape = (n_samples, n_outputs)
+                    True labels for train samples.
+                bottleneck_test_features : array-like, shape = (n_samples, n_features)
+                    Test samples.
+                test_labels : array-like, shape = (n_samples, n_outputs)
+                    True labels for test samples.
+        """
 
 
         # create the base pre-trained model for warm-up
@@ -290,49 +308,66 @@ if __name__ == '__main__':
     config.gpu_options.per_process_gpu_memory_fraction = 0.50
     set_session(tf.Session(config=config))
 
-    args = get_args()
-    feature_extraction = FeatureExtraction(pre_trained_model=args.pre_trained_model)
+    # args = get_args()
+    # feature_extraction = FeatureExtraction(pre_trained_model=args.pre_trained_model)
 
-    # pre_trained_model = 'VGG16_Places365'
+    pre_trained_model = 'ResNet50'
     # feature_extraction = FeatureExtraction(pre_trained_model=pre_trained_model)
 
 
-    train_features, train_labels, test_features, test_labels = feature_extraction.extract_bottlebeck_features()
+    # train_features, train_labels, test_features, test_labels = feature_extraction.extract_bottlebeck_features()
 
 
     # train_features, train_labels, test_features, test_labels = feature_extraction.load_bottlebeck_features()
-    #
-    # print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
-    #
-    #
-    # if pre_trained_model == 'ResNet50':
-    #     train_features = np.reshape(train_features, (3050, 1 * 1 * 2048))
-    #     test_features = np.reshape(test_features, (270, 1 * 1 * 2048))
-    #
-    # else:
-    #     train_features = np.reshape(train_features, (3050, 7 * 7 * 512))
-    #     test_features = np.reshape(test_features, (270, 7 * 7 * 512))
-    #
-    # print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
-    #
-    #
-    #
-    #
-    # from sklearn.neighbors import KNeighborsClassifier
-    # from sklearn.model_selection import GridSearchCV
-    #
-    #
-    # # Create and fit a nearest-neighbor classifier
-    # knn = KNeighborsClassifier()
-    # knn.fit(train_features, train_labels)
-    # KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
-    #                             metric_params=None, n_jobs=1, n_neighbors=5, p=2,
-    #                             weights='uniform')
-    #
-    # # reference
-    # # https: // gurus.pyimagesearch.com / lesson - sample - k - nearest - neighbor - classification /
-    #
-    # # evaluate the model and update the accuracies list
-    # score = knn.score(test_features, test_labels)
-    #
-    # print (score)
+
+    train_features = np.load(open('/home/sandbox/Desktop/bottleneck_train_features_ResNet50.npy', 'rb'))
+    train_labels = np.load(open('/home/sandbox/Desktop/bottleneck_train_labels_ResNet50.npy', 'rb'))
+
+    test_features = np.load(open('/home/sandbox/Desktop/bottleneck_test_features_ResNet50.npy', 'rb'))
+    test_labels = np.load(open('/home/sandbox/Desktop/bottleneck_test_labels_ResNet50.npy', 'rb'))
+
+    print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
+
+
+    if pre_trained_model == 'ResNet50':
+        train_features = np.reshape(train_features, (3050, 7 * 7 * 2048))
+        test_features = np.reshape(test_features, (270, 7 * 7 * 2048))
+
+    else:
+        train_features = np.reshape(train_features, (3050, 7 * 7 * 512))
+        test_features = np.reshape(test_features, (270, 7 * 7 * 512))
+
+    print(train_features.shape, test_features.shape, train_labels.shape, test_labels.shape)
+
+
+
+
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.model_selection import GridSearchCV
+
+
+    # Create and fit a nearest-neighbor classifier
+    knn = KNeighborsClassifier()
+    knn.fit(train_features, train_labels)
+    KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+                         metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                         weights='uniform')
+
+    # reference
+    # https: // gurus.pyimagesearch.com / lesson - sample - k - nearest - neighbor - classification /
+
+    # evaluate the model and update the accuracies list
+    score = knn.score(test_features, test_labels)
+
+
+    print ('KNeighborsClassifier mean accuracy:', score)
+
+    from sklearn.svm import SVC
+
+    clf = SVC(kernel='linear')
+    clf.fit(train_features, train_labels)
+
+    svm_score = clf.score(test_features, test_labels)
+
+    print('SVM mean accuracy:', svm_score)
+

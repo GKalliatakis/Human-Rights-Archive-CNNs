@@ -103,8 +103,8 @@ def HRA_VGG16(include_top=True, weights='HRA',
             It should have exactly 3 input channels,
             and width and height should be no smaller than 48.
             E.g. `(200, 200, 3)` would be one valid value.
-        mode: one of `TL` (transfer learning - freeze all but the penultimate layer and re-train the last Dense layer)
-            or `FT` (fine-tuning - unfreeze the lower convolutional layers and retrain more layers) ,
+        mode: one of `feature_extraction` (freeze all but the penultimate layer and re-train the last Dense layer)
+            or `fine_tuning` (unfreeze the lower convolutional layers and retrain more layers).
         pooling_mode: Pooling mode that will be applied to the output of the last convolutional layer of the original model
             and thus the output of the model will be a 2D tensor.
             - `avg` means that global average pooling_mode operation for spatial data will be applied.
@@ -239,8 +239,6 @@ def HRA_VGG16(include_top=True, weights='HRA',
                                                 cache_subdir=cache_subdir)
 
 
-
-
             elif mode == 'fine_tuning':
                 if pooling_mode == 'flatten':
                     for layer in model.layers[:17]:
@@ -300,12 +298,3 @@ def HRA_VGG16(include_top=True, weights='HRA',
 
 
     return model
-
-
-if __name__ == '__main__':
-
-    # model = HRA_VGG16(weights='HRA', mode='feature_extraction', pooling_mode='avg', include_top=True)
-
-    model = HRA_VGG16(weights='HRA', mode='fine_tuning', pooling_mode='avg', include_top=True)
-
-    model.summary()

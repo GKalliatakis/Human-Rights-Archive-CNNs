@@ -176,8 +176,8 @@ def CompoundNet_VGG16(include_top=True, weights=None,
             fusion_strategy: one of `concatenate` (feature vectors of different sources are concatenated into one super-vector),
                 `average` (the feature set is averaged)
                 or `maximum` (selects the highest value from the corresponding features).
-            mode: one of `TL` (transfer learning - freeze all but the penultimate layer and re-train the last Dense layer)
-                or `FT` (fine-tuning - unfreeze the lower convolutional layers and retrain more layers) ,
+            mode: one of `feature_extraction` (freeze all but the penultimate layer and re-train the last Dense layer)
+                or `fine_tuning` (unfreeze the lower convolutional layers and retrain more layers).
             pooling_mode: Optional pooling_mode mode for feature extraction
                 when `include_top` is `False`.
                 - `None` means that the output of the model will be
@@ -247,7 +247,6 @@ def CompoundNet_VGG16(include_top=True, weights=None,
     object_centric_model = VGG16(input_tensor=input_tensor, weights='imagenet', include_top=False)
 
     scene_centric_model = VGG16_Places365(input_tensor=input_tensor,weights='places', include_top=False)
-
 
 
     # retrieve the ouputs
@@ -406,8 +405,6 @@ def CompoundNet_VGG16(include_top=True, weights=None,
                                                     cache_subdir=cache_subdir)
 
 
-
-
             elif mode == 'fine_tuning':
                 for layer in model.layers[:33]:
                     layer.trainable = False
@@ -538,15 +535,4 @@ def CompoundNet_VGG16(include_top=True, weights=None,
         model.load_weights(weights_path)
 
     return model
-
-if __name__=="__main__":
-
-    model = CompoundNet_VGG16(weights='HRA',
-                              fusion_strategy='concatenate',
-                              mode= 'fine_tuning',
-                              pooling_mode='avg')
-
-    model.summary()
-
-
 

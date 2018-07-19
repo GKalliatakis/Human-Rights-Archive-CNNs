@@ -2,7 +2,7 @@
 
     Example
     --------
-    >>> python run_HRA_basic.py --img_path path/to/your/image/xxx.jpg --pre_trained_model VGG16 --pooling_mode avg
+    >>> python run_HRA_basic.py --img_path path/to/your/image/xxx.jpg --pre_trained_model VGG19 --pooling_mode avg
 
 """
 

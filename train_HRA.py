@@ -1,27 +1,31 @@
-"""Top-level (abstract) script for training various CNNs on the HRA dataset.
+"""Abstract script for two-phase training of various CNNs on the HRA dataset.
 
 
     Example
     --------
     >>> python train_HRA.py --pre_trained_model VGG16 --pooling_mode avg
 
+# Reference:
+- [Exploring object-centric and scene-centric CNN features and their complementarity for human rights violations recognition in images](https://arxiv.org/pdf/1805.04714.pdf)
+
 """
 
 from __future__ import print_function
-from engine.hra_transferring_img_representations import feature_extraction as fe
-from engine.hra_transferring_img_representations import fine_tuning as ft
-
-from engine.hra_transferring_img_representations_class_weight import feature_extraction as fe_class_weights
-from engine.hra_transferring_img_representations_class_weight import fine_tuning as ft_class_weights
 
 import argparse
+
+from AUX_material.hra_transferring_img_representations_no_class_weights import feature_extraction as fe
+from AUX_material.hra_transferring_img_representations_no_class_weights import fine_tuning as ft
+from engine.hra_transferring_img_representations import feature_extraction as fe_class_weights
+from engine.hra_transferring_img_representations import fine_tuning as ft_class_weights
+
 
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pre_trained_model", type = str,help = 'One of `VGG16`, `VGG19`, `ResNet50` or `VGG16_Places365`')
     parser.add_argument("--pooling_mode", type = str, help = 'One of `avg`, `max`, or `flatten`')
     parser.add_argument("--data_augm_enabled", type = bool, default = False, help = 'Whether to augment the samples during training or not')
-    parser.add_argument("--include_class_weight", type=bool, default=False,
+    parser.add_argument("--include_class_weight", type=bool, default=True,
                         help='Dictionary mapping class indices (integers) to a weight (float) value, '
                              'used for weighting the loss function (during training only)')
 

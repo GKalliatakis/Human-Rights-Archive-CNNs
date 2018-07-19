@@ -76,6 +76,16 @@ human_rights_classes = ['arms', 'child_labour', 'child_marriage', 'detention_cen
                         'disability_rights', 'displaced_populations','environment',
                         'no_violation', 'out_of_school']
 
+# https://groups.google.com/forum/#!topic/keras-users/MUO6v3kRHUw
+# To train unbalanced classes 'fairly', we want to increase the importance of the under-represented class(es).
+# To do this, we need to chose a reference class. You can pick any class to serve as the reference, but conceptually,
+# I like the majority class (the one with the most samples).
+# Creating your class_weight dictionary:
+# 1. determine the ratio of reference_class/other_class. If you choose class_0 as your reference,
+# you'll have (1000/1000, 1000/500, 1000/100) = (1,2,10)
+# 2. map the class label to the ratio: class_weight={0:1, 1:2, 2:10}
+class_weight = {0: 5.08, 1: 1, 2: 10.86, 3: 5.08, 4: 3.46, 5: 2.31, 6: 4.70, 7: 6.17, 8: 1.55}
+
 # Augmentation configuration with only rescaling.
 # Rescale is a value by which we will multiply the data before any other processing.
 # Our original images consist in RGB coefficients in the 0-255, but such values would
@@ -154,11 +164,11 @@ def feature_extraction(pre_trained_model='VGG16',
                          'or `flatten` (Flatten).')
 
     # Define the name of the model and its weights
-    weights_name = 'feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
+    weights_name = 'cost_sensitive_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
 
-    augm_samples_weights_name = 'augm_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
+    augm_samples_weights_name = 'cost_sensitive_augm_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_weights_tf_dim_ordering_tf_kernels.h5'
 
-    model_log = logs_dir + 'feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_log.csv'
+    model_log = logs_dir + 'cost_sensitive_feature_extraction_' + pre_trained_model + '_' + pooling_mode + '_pool_log.csv'
     csv_logger = CSVLogger(model_log, append=True, separator=',')
 
     input_tensor = Input(shape=(224, 224, 3))
@@ -245,7 +255,8 @@ def feature_extraction(pre_trained_model='VGG16',
         history = model.fit_generator(augmented_train_generator,
                                       steps_per_epoch=nb_train_samples // batch_size,
                                       epochs=feature_extraction_epochs,
-                                      callbacks=[csv_logger])
+                                      callbacks=[csv_logger],
+                                      class_weight=class_weight)
 
         print('Training time for re-training the last Dense layer using augmented samples: %s' % (now() - t))
 
@@ -260,7 +271,8 @@ def feature_extraction(pre_trained_model='VGG16',
         history = model.fit_generator(train_generator,
                                       steps_per_epoch=nb_train_samples // batch_size,
                                       epochs=feature_extraction_epochs,
-                                      callbacks=[csv_logger])
+                                      callbacks=[csv_logger],
+                                      class_weight=class_weight)
 
         print('Training time for re-training the last Dense layer: %s' % (now() - t))
 
@@ -376,7 +388,8 @@ def fine_tuning(stable_model,
         history = stable_model.fit_generator(augmented_train_generator,
                                              steps_per_epoch=nb_train_samples // batch_size,
                                              epochs=fine_tune_epochs,
-                                             callbacks=[csv_logger])
+                                             callbacks=[csv_logger],
+                                             class_weight=class_weight)
 
         print('Training time for fine-tuning using augmented samples: %s' % (now() - t))
 
@@ -391,7 +404,8 @@ def fine_tuning(stable_model,
         history = stable_model.fit_generator(train_generator,
                                       steps_per_epoch=nb_train_samples // batch_size,
                                       epochs=fine_tune_epochs,
-                                      callbacks=[csv_logger])
+                                      callbacks=[csv_logger],
+                                      class_weight=class_weight)
 
         print('Training time for fine-tuning: %s' % (now() - t))
 
