@@ -149,3 +149,8 @@ Please cite the following [paper](https://arxiv.org/pdf/1805.04714.pdf) if you u
 
 
 Please email [Grigorios Kalliatakis](mailto:gkallia@essex.ac.uk) if you have any questions or comments.
+
+
+### To-Do (after acceptance)
+
+- [ ] Update all weights files for Human-Rights-Archive-CNNs (currently are saved @ https://github.com/GKalliatakis/crispy-enigma)
