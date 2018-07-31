@@ -38,7 +38,6 @@ magnitude of the updates stays very small, so as not to wreck the previously lea
 - [https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html]
 
 """
-
 import os
 import sys
 
@@ -117,7 +116,7 @@ train_generator = datagen.flow_from_directory(train_dir, target_size=(img_width,
 augmented_train_generator = augmented_datagen.flow_from_directory(train_dir, target_size=(img_width, img_height),
                                                                   classes=human_rights_classes, class_mode='categorical',
                                                                   batch_size=batch_size)
-
+train_generator.classes
 
 
 def feature_extraction(pre_trained_model='VGG16',

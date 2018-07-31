@@ -62,7 +62,7 @@ metrics = HRA_metrics(main_test_dir ='/home/sandbox/Desktop/Human_Rights_Archive
 
 [y_true, y_pred, y_score] = metrics.predict_labels(model)
 
-# [y_true, y_pred] = metrics.duo_ensemble_predict_labels(model_a=model_a, model_b= model_b)
+[y_true, y_pred] = metrics.duo_ensemble_predict_labels(model_a=model_a, model_b= model_b)
 
 
 # print y_true
