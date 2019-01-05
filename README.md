@@ -1,4 +1,4 @@
-## Release of Human-Rights-Archive-CNNs
+## Release of Human-Rights-Archive-CNNs [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=The%20Human-Rights-Archive-CNNs%20for%20Human%20Rights%20Violations%20Recognition&url=https://github.com/GKalliatakis/Human-Rights-Archive-CNNs&hashtags=ML,DeepLearning,CNNs,HumanRights,HumanRightsViolations)
 
 We release various convolutional neural networks (CNNs) trained on _Human Rights Archive (HRA)_ to the public.
 HRA is the first verified-by-experts repository of human rights violations photographs, labelled with human rights semantic categories,
@@ -150,7 +150,8 @@ Please cite the following [paper](https://arxiv.org/pdf/1805.04714.pdf) if you u
 
 Please email [Grigorios Kalliatakis](mailto:gkallia@essex.ac.uk) if you have any questions or comments.
 
-
+<!---
 ### To-Do (after acceptance)
 
 - [ ] Update all weights files for Human-Rights-Archive-CNNs (currently are saved @ https://github.com/GKalliatakis/crispy-enigma)
+-->
