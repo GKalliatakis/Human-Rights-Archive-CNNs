@@ -1,4 +1,4 @@
-## Release of Human-Rights-Archive-CNNs [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=The%20Human-Rights-Archive-CNNs%20for%20Human%20Rights%20Violations%20Recognition&url=https://github.com/GKalliatakis/Human-Rights-Archive-CNNs&hashtags=ML,DeepLearning,CNNs,HumanRights,HumanRightsViolations)
+# Release of Human-Rights-Archive-CNNs [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=The%20Human-Rights-Archive-CNNs%20for%20Human%20Rights%20Violations%20Recognition&url=https://github.com/GKalliatakis/Human-Rights-Archive-CNNs&hashtags=ML,DeepLearning,CNNs,HumanRights,HumanRightsViolations)
 
 We release various convolutional neural networks (CNNs) trained on _Human Rights Archive (HRA)_ to the public.
 HRA is the first verified-by-experts repository of human rights violations photographs, labelled with human rights semantic categories,
@@ -135,23 +135,20 @@ Then you'll see the application opening in the web browser on the following addr
 
 ### Reference
 
-Please cite the following [paper](https://arxiv.org/pdf/1805.04714.pdf) if you use the data or pre-trained CNN models.
+Please cite the following [paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8606079) if you use the data or pre-trained CNN models.
 
 ```
- @article{kalliatakis2018exploring,
+@article{kalliatakis2019exploring,
   title={Exploring object-centric and scene-centric CNN features and their complementarity for human rights violations recognition in images},
-  author={Kalliatakis, Grigorios and Ehsan, Shoaib and Leonardis, Ales and McDonald-Maier, Klaus},
-  journal={arXiv preprint arXiv:1805.04714},
-  year={2018}
- }
+  author={Kalliatakis, Grigorios and Ehsan, Shoaib and Leonardis, Ale{\v{s}} and Fasli, Maria and McDonald-Maier, Klaus D},
+  journal={IEEE Access},
+  volume={7},
+  pages={10045--10056},
+  year={2019},
+  publisher={IEEE}
+}
 
 ```
 
 
 Please email [Grigorios Kalliatakis](mailto:gkallia@essex.ac.uk) if you have any questions or comments.
-
-<!---
-### To-Do (after acceptance)
-
-- [ ] Update all weights files for Human-Rights-Archive-CNNs (currently are saved @ https://github.com/GKalliatakis/crispy-enigma)
--->
